@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Response implements Serializable {
     public Integer id;
     public Object answer;
+    public boolean hasError;
     @Override
     public String toString()
     {

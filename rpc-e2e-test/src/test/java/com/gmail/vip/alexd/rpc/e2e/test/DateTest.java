@@ -1,6 +1,8 @@
-package com.gmail.vip.alexd.rpc.server;
+package com.gmail.vip.alexd.rpc.e2e.test;
 
 import com.gmail.vip.alexd.rpc.client.Client;
+import com.gmail.vip.alexd.rpc.protocol.Response;
+import com.gmail.vip.alexd.rpc.server.Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +22,11 @@ public class DateTest {
         clientnew = new Client();
     }
     @Test
-    public void assert_computer_name() throws Exception {
-        Object actualResult = clientnew.remoteCall(1111, "Service","getDate", new Object[]{});
+    public void assert_date() throws Exception {
+        Response actualResult = (Response) clientnew.remoteCall(1111, "Service","getDate", new Object[]{});
         Date date = new Date();
         System.out.println(actualResult);
-        assertNotEquals(date,actualResult);
+        assertNotEquals(date,actualResult.answer);
     }
 
     @After

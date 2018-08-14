@@ -35,10 +35,15 @@ public class Client {
                     Response response = null;
                     try {
                         response = (Response) objectInputStream.readObject();
+                        if (response.hasError){
+                            logger.error("Error: "+ response.answer);
+                            Thread.interrupted();
+                        }
+
                     } catch (IOException | ClassNotFoundException e) {
                         logger.info("Socket is closed");
                     }
-                        responseMap.get(response.id).complete(response.answer);
+                        responseMap.get(response.id).complete(response);
                     }
                 }).start();
 
