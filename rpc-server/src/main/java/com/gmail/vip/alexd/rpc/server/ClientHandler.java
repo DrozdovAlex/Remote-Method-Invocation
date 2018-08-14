@@ -20,18 +20,7 @@ public class ClientHandler {
     private Logger logger = LogManager.getLogger(Server.class.getName());
     ExecutorService pool = Executors.newCachedThreadPool();
     public void handle(Socket clientSocket, Properties properties){
-        if (Thread.getDefaultUncaughtExceptionHandler() != null ) {
 
-        }
-        else {
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
-                @Override
-                public void uncaughtException(Thread t, Throwable e) {
-                    System.out.println("gfgf");
-                    e.printStackTrace();
-                }
-            });
-        }
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -48,7 +37,8 @@ public class ClientHandler {
                         try {
                             response.answer = checkingRequest.checking(properties.getProperty(request.service), request.method);
                         } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
-                            e.printStackTrace();
+                            response.hasError = true;
+                            response.answer = "Method not found";
                         }
 
                         synchronized (objectOutputStream) {
@@ -61,7 +51,8 @@ public class ClientHandler {
                         }
                    });
                 } else {
-                    response.answer = "Wrong service";
+                    response.hasError = true;
+                    response.answer = "Service not found";
                     synchronized (objectOutputStream) {
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();

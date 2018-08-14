@@ -1,13 +1,14 @@
-package com.gmail.vip.alexd.rpc.server;
+package com.gmail.vip.alexd.rpc.e2e.test;
 
 import com.gmail.vip.alexd.rpc.client.Client;
+import com.gmail.vip.alexd.rpc.server.Server;
+import com.gmail.vip.alexd.rpc.protocol.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.net.InetAddress;
 import static org.junit.Assert.*;
 
-public class HostNameTest {
+public class MailTest {
     private Server servernew;
     private Client clientnew;
 
@@ -19,12 +20,11 @@ public class HostNameTest {
         clientnew = new Client();
     }
     @Test
-    public void assert_computer_name() throws Exception {
-
-        Object actualResult = clientnew.remoteCall(1111, "Service","getHostName", new Object[]{});
-        String computername=InetAddress.getLocalHost().getHostName();
+    public void assert_mail() throws Exception {
+        Response actualResult = (Response) clientnew.remoteCall(222, "Service","getMail", new Object[]{});
+        String mail ="vip.alexd@gmail.com";
         System.out.println(actualResult);
-        assertEquals(computername,actualResult);
+        assertEquals(mail,actualResult.answer);
     }
 
     @After
