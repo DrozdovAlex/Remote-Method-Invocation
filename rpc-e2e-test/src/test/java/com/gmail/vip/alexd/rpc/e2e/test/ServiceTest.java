@@ -1,8 +1,8 @@
 package com.gmail.vip.alexd.rpc.e2e.test;
 
-import com.gmail.vip.alexd.rpc.client.Client;
-import com.gmail.vip.alexd.rpc.protocol.Response;
-import com.gmail.vip.alexd.rpc.server.Server;
+import com.bitbucket.inbacks.rmi.client.Client;
+import com.bitbucket.inbacks.rmi.protocol.Response;
+import com.bitbucket.inbacks.rmi.server.Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

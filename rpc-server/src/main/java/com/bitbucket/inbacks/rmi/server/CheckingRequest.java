@@ -1,4 +1,4 @@
-package com.gmail.vip.alexd.rpc.server;
+package com.bitbucket.inbacks.rmi.server;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

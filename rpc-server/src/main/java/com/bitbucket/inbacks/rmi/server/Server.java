@@ -1,4 +1,4 @@
-package com.gmail.vip.alexd.rpc.server;
+package com.bitbucket.inbacks.rmi.server;
 
 import java.io.*;
 import java.net.ServerSocket;

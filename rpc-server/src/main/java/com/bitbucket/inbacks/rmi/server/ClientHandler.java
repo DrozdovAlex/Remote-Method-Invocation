@@ -1,7 +1,7 @@
-package com.gmail.vip.alexd.rpc.server;
+package com.bitbucket.inbacks.rmi.server;
 
-import com.gmail.vip.alexd.rpc.protocol.Request;
-import com.gmail.vip.alexd.rpc.protocol.Response;
+import com.bitbucket.inbacks.rmi.protocol.Response;
+import com.bitbucket.inbacks.rmi.protocol.Request;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,7 +49,7 @@ public class ClientHandler {
                                 e.printStackTrace();
                             }
                         }
-                   });
+                    });
                 } else {
                     response.setHasError(true);
                     response.setAnswer("Service not found");
