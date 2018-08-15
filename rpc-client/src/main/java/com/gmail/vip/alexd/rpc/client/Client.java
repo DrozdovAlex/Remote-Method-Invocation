@@ -13,62 +13,97 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 public class Client {
+    private final String PROPERTY_FILE_NAME = "/server.properties";
+    private final String HOST = "rpc.host";
+    private final String PORT = "rpc.port";
+
+    private Properties properties;
     private Socket socket;
-    private  ObjectInputStream objectInputStream;
-    private  ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
+    private Map<Integer,CompletableFuture<Object>> responses;
+
     private Logger logger = LogManager.getLogger(Client.class.getName());
-    Properties properties = new Properties();
-    private Map<Integer,CompletableFuture<Object>> responseMap = new ConcurrentHashMap<>();
 
     public Client() throws IOException {
+        loadProperties();
+        responses = new ConcurrentHashMap<>();
+    }
+
+    private void loadProperties() {
+        properties = new Properties();
         try {
-            properties = new Properties();
-            properties.load(getClass().getResourceAsStream("/server.properties"));
-            socket = new Socket(properties.getProperty("rpc.host"), Integer.parseInt(properties.getProperty("rpc.port")));
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
-
-                new Thread(() -> {
-                    while (objectInputStream!=null) {
-                    Response response = null;
-                    try {
-                        response = (Response) objectInputStream.readObject();
-                        if (response.hasError){
-                            logger.error("Error: "+ response.answer);
-                            Thread.interrupted();
-                        }
-
-                    } catch (IOException | ClassNotFoundException e) {
-                        logger.info("Socket is closed");
-                    }
-                        responseMap.get(response.id).complete(response);
-                    }
-                }).start();
-
-        }catch (Exception e){
-            logger.warn("Can not connect to the server");
+            properties.load(getClass().getResourceAsStream(PROPERTY_FILE_NAME));
+        } catch (IOException e) {
+            logger.warn("Can not extract properties from the {}", PROPERTY_FILE_NAME);
         }
     }
 
-    public Object remoteCall(int id, String service, String method,  Object[] params) throws IOException, ClassNotFoundException, InterruptedException {
+    public void run() throws IOException {
+        setSocket();
+        setObjectOutputStream();
+        setObjectInputStream();
+
+        new Thread(() -> {
+            while (!socket.isClosed()) {
+                Response response;
+                try {
+                    response = (Response) objectInputStream.readObject();
+                    if (response.isHasError()){
+                        logger.error("Error: "+ response.getAnswer());
+                        Thread.interrupted();
+                    }
+                    responses.get(response.getId()).complete(response);
+                } catch (IOException | ClassNotFoundException e) {
+                    logger.warn("Problem while reading object from input stream");
+                }
+            }
+        }).start();
+    }
+
+    private void setSocket() throws IOException {
+        logger.info(properties.getProperty(HOST) + " " + Integer.parseInt(properties.getProperty(PORT)));
+        socket = new Socket(properties.getProperty(HOST),
+                Integer.parseInt(properties.getProperty(PORT)));
+    }
+
+    public void setObjectOutputStream() {
         try {
-            Request request = new Request();
-            request.id = id;
-            request.service = service;
-            request.method = method;
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            logger.warn("Problem with opening of output stream", e);
+        }
+    }
+
+    public void setObjectInputStream() {
+        try {
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            logger.warn("Problem with opening of input stream", e);
+        }
+    }
+
+    public Object remoteCall(int id, String service, String method,  Object[] params) {
+        try {
             logger.info("Your request : {} {} {}", id, service, method);
-            responseMap.put(request.id, new CompletableFuture<>());
+
+            responses.put(id, new CompletableFuture<>());
             synchronized (objectOutputStream) {
-                objectOutputStream.writeObject(request);
+                objectOutputStream.writeObject(new Request(id, service, method, params));
                 objectOutputStream.flush();
             }
-            return responseMap.get(request.id).get();
-
-        } catch (Exception e) {
-            logger.warn("Can not use method because socket is not connected" , e);
+            return responses.get(id).get();
+        } catch (IOException e) {
+            logger.warn("Problem while writing object to output stream" , e);
             return null;
+        } catch (InterruptedException | ExecutionException e) {
+            logger.warn("Problem with extracting response from the map" , e);
+            return null;
+        } finally {
+            responses.remove(id);
         }
     }
 

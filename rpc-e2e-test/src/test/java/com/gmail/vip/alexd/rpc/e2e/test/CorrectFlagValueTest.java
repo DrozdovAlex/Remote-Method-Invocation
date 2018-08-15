@@ -10,48 +10,47 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CorrectFlagValueTest {
-    private Server servernew;
-    private Client clientnew;
+    private Server server;
+    private Client client;
 
     @Before
     public void setUp() throws Exception {
-
-        servernew = new Server();
-        servernew.run();
-        clientnew = new Client();
+        server = new Server();
+        server.run();
+        client = new Client();
+        client.run();
     }
     @Test
     public void setTrueForService() throws Exception {
-        Response actualResult = (Response) clientnew.remoteCall(1111, "wrongservice","getDate", new Object[]{});
+        Response actualResult = (Response) client.remoteCall(1111, "wrongservice","getDate", new Object[]{});
         boolean error = true;
-        assertEquals(error,actualResult.hasError);
+        assertEquals(error,actualResult.isHasError());
     }
 
     @Test
     public void setTrueForMethod() throws Exception {
-        Response actualResult = (Response) clientnew.remoteCall(1111, "Service","wrongmethod", new Object[]{});
+        Response actualResult = (Response) client.remoteCall(1111, "Service","wrongmethod", new Object[]{});
         boolean error = true;
-        assertEquals(error,actualResult.hasError);
+        assertEquals(error,actualResult.isHasError());
     }
 
     @Test
     public void setFalseForService() throws Exception {
-        Response actualResult = (Response) clientnew.remoteCall(1111, "Service","getDate", new Object[]{});
+        Response actualResult = (Response) client.remoteCall(1111, "Service","getDate", new Object[]{});
         boolean error = false;
-        assertEquals(error,actualResult.hasError);
+        assertEquals(error,actualResult.isHasError());
     }
 
     @Test
     public void setFalseForMethod() throws Exception {
-        Response actualResult = (Response) clientnew.remoteCall(1111, "Service","getDate", new Object[]{});
+        Response actualResult = (Response) client.remoteCall(1111, "Service","getDate", new Object[]{});
         boolean error = false;
-        assertEquals(error,actualResult.hasError);
+        assertEquals(error,actualResult.isHasError());
     }
 
     @After
     public void tearDown() throws Exception {
-        clientnew.disconnect();
-        servernew.disconnect();
+        client.disconnect();
+        server.disconnect();
     }
-
 }
