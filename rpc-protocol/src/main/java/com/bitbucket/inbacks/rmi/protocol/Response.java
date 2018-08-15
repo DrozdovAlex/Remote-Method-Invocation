@@ -7,6 +7,12 @@ public class Response implements Serializable {
     private Object answer;
     private boolean hasError;
 
+    public Response(Integer id, Object answer,boolean hasError) {
+        this.id = id;
+        this.answer = answer;
+        this.hasError = hasError;
+    }
+
     public Integer getId() {
         return id;
     }

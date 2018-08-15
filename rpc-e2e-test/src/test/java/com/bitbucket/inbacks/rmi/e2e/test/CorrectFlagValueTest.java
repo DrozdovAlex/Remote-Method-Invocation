@@ -1,4 +1,4 @@
-package com.gmail.vip.alexd.rpc.e2e.test;
+package com.bitbucket.inbacks.rmi.e2e.test;
 
 import com.bitbucket.inbacks.rmi.client.Client;
 import com.bitbucket.inbacks.rmi.protocol.Response;
