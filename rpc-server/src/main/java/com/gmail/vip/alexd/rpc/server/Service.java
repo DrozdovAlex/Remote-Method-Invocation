@@ -14,7 +14,7 @@ public class Service {
         return InetAddress.getLocalHost().getHostName();
     }
 
-    public String getMail(){
+    public String getMail() {
         return "vip.alexd@gmail.com";
     }
 

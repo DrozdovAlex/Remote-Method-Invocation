@@ -28,17 +28,17 @@ public class ClientHandler {
             while (objectInputStream != null){
 
                 Request request = (Request) objectInputStream.readObject();
-                logger.info("Request from client : " + request.id + " " + request.service + " " + request.method);
+                logger.info("Request from client : " + request.getId() + " " + request.getService() + " " + request.getMethod());
                 Response response = new Response();
                 CheckingRequest checkingRequest = new CheckingRequest();
-                response.id = request.id;
-                if (properties.containsKey(request.service)){
+                response.setId(request.getId());
+                if (properties.containsKey(request.getService())){
                     pool.execute( ()-> {
                         try {
-                            response.answer = checkingRequest.checking(properties.getProperty(request.service), request.method);
+                            response.setAnswer(checkingRequest.checking(properties.getProperty(request.getService()), request.getMethod()));
                         } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
-                            response.hasError = true;
-                            response.answer = "Method not found";
+                            response.setHasError(true);
+                            response.setAnswer("Method not found");
                         }
 
                         synchronized (objectOutputStream) {
@@ -51,8 +51,8 @@ public class ClientHandler {
                         }
                    });
                 } else {
-                    response.hasError = true;
-                    response.answer = "Service not found";
+                    response.setHasError(true);
+                    response.setAnswer("Service not found");
                     synchronized (objectOutputStream) {
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();
