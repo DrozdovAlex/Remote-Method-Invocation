@@ -1,7 +1,7 @@
-package com.gmail.vip.alexd.rpc.client;
+package com.bitbucket.inbacks.rmi.client;
 
-import com.gmail.vip.alexd.rpc.protocol.Request;
-import com.gmail.vip.alexd.rpc.protocol.Response;
+import com.bitbucket.inbacks.rmi.protocol.Request;
+import com.bitbucket.inbacks.rmi.protocol.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

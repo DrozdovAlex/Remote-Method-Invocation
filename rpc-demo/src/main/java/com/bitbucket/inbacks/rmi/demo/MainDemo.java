@@ -1,11 +1,9 @@
-package com.gmail.vip.alexd.rpc.demo;
+package com.bitbucket.inbacks.rmi.demo;
 
-import com.gmail.vip.alexd.rpc.client.Client;
-import com.gmail.vip.alexd.rpc.server.Server;
+import com.bitbucket.inbacks.rmi.client.Client;
+import com.bitbucket.inbacks.rmi.server.Server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
 
 public class MainDemo {
     public static void main(String[] args) throws Exception {

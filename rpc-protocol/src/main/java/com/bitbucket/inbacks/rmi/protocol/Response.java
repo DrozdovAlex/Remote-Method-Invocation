@@ -1,4 +1,4 @@
-package com.gmail.vip.alexd.rpc.protocol;
+package com.bitbucket.inbacks.rmi.protocol;
 
 import java.io.Serializable;
 
