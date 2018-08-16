@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
@@ -57,8 +58,11 @@ public class Client {
                         Thread.interrupted();
                     }
                     responses.get(response.getId()).complete(response);
+                } catch (SocketException e) {
+                    logger.warn("Socket is already closed");
+                    break;
                 } catch (IOException | ClassNotFoundException e) {
-                    logger.warn("Problem while reading object from input stream");
+                    logger.error("Problem while reading object from input stream");
                 }
             }
         }).start();
