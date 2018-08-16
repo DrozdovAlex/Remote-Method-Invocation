@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -90,7 +91,8 @@ public class Client {
         }
     }
 
-    public Object remoteCall(int id, String service, String method,  Object[] params) {
+    public Object remoteCall(String service, String method,  Object[] params) {
+        int id = new Random().nextInt(10000000);
         try {
             logger.info("Your request : {} {} {}", id, service, method);
 
