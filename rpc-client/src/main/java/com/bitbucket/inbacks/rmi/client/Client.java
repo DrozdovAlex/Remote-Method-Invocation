@@ -70,7 +70,7 @@ public class Client {
     }
 
     private void setSocket() throws IOException {
-        logger.info(properties.getProperty(HOST) + " " + Integer.parseInt(properties.getProperty(PORT)));
+        logger.info(properties.getProperty(HOST) + " " + properties.getProperty(PORT));
         socket = new Socket(properties.getProperty(HOST),
                 Integer.parseInt(properties.getProperty(PORT)));
     }

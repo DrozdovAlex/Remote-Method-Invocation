@@ -17,12 +17,10 @@ class ClientHandler {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
     private CheckingRequest checkingRequest;
-    private Logger logger = LogManager.getLogger(Server.class.getName());
+    private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
     private ExecutorService pool = Executors.newCachedThreadPool();
 
     void handle(Socket clientSocket, Properties properties) throws IOException, ClassNotFoundException {
-
-
         try {
             setObjectOutputStream(clientSocket);
             setObjectInputStream(clientSocket);
