@@ -53,7 +53,7 @@ public class Client {
                 Response response;
                 try {
                     response = (Response) objectInputStream.readObject();
-                    if (response.isHasError()){
+                    if (response.hasError()){
                         logger.error("Error: "+ response.getAnswer());
                         Thread.interrupted();
                     }
