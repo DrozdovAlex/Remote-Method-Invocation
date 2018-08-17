@@ -23,25 +23,31 @@ class ClientHandler {
 
     public void handle(Socket clientSocket, Properties properties) throws IOException {
         setStreams(clientSocket);
-        try {
-            while (objectInputStream != null) {
+
+        while (objectInputStream != null) {
+            try {
                 Request request = readRequest();
+
                 pool.execute(() -> {
                     try {
+                        System.out.println(properties.getProperty(request.getService()));
                         writeResponse(request.getId(),
                                 new Answerer(properties.getProperty(request.getService()), request.getMethod()).getAnswer(),
                                 false);
                     } catch (ServiceNotFoundException e) {
-                            writeResponse(request.getId(),"Service not found", true);
+                        writeResponse(request.getId(),"Service not found", true);
                     } catch (MethodNotFoundException e) {
-                            writeResponse(request.getId(),"Method not found", true);
+                        writeResponse(request.getId(),"Method not found", true);
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                         writeResponse(request.getId(),"Reflection problem", true);
                     }
                 });
+            } catch (IOException | ClassNotFoundException e) {
+                logger.error("Problem while reading object from input stream", e);
+                return;
+            } finally {
+                Thread.interrupted();
             }
-        } catch(Exception e) {
-            clientSocket.close();
         }
     }
 
@@ -66,15 +72,10 @@ class ClientHandler {
         }
     }
 
-    private Request readRequest() throws ClassNotFoundException {
-        try {
-            Request request = (Request) objectInputStream.readObject();
-            logger.info("Request from client : " + request.getId() + " " + request.getService() + " " + request.getMethod());
-            return request;
-        } catch (IOException | ClassNotFoundException e) {
-            Thread.interrupted();
-            return null;
-        }
+    private Request readRequest() throws IOException, ClassNotFoundException {
+        Request request = (Request) objectInputStream.readObject();
+        logger.info("Request from client : {}", request);
+        return request;
     }
 
     private void writeResponse(int id, Object answer, boolean hasError) {
