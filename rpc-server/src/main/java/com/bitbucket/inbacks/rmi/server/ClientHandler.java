@@ -2,6 +2,8 @@ package com.bitbucket.inbacks.rmi.server;
 
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
+import com.bitbucket.inbacks.rmi.server.exception.MethodNotFoundException;
+import com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
@@ -16,36 +18,36 @@ import java.util.concurrent.Executors;
 class ClientHandler {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private CheckingRequest checkingRequest;
     private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    void handle(Socket clientSocket, Properties properties) throws IOException {
+    public void handle(Socket clientSocket, Properties properties) throws IOException {
+        setStreams(clientSocket);
         try {
-            setObjectOutputStream(clientSocket);
-            setObjectInputStream(clientSocket);
-
             while (objectInputStream != null) {
                 Request request = readRequest();
-
-                if (properties.containsKey(request.getService())) {
-                    pool.execute(() -> {
-                        try {
-                            checkingRequest = new CheckingRequest();
-                            writeResponse(request.getId(), checkingRequest.checking(properties.getProperty(request.getService()),
-                                    request.getMethod()), false);
-                        } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException |
-                                IllegalAccessException | InstantiationException e) {
+                pool.execute(() -> {
+                    try {
+                        writeResponse(request.getId(),
+                                new Answerer(properties.getProperty(request.getService()), request.getMethod()).getAnswer(),
+                                false);
+                    } catch (ServiceNotFoundException e) {
+                            writeResponse(request.getId(),"Service not found", true);
+                    } catch (MethodNotFoundException e) {
                             writeResponse(request.getId(),"Method not found", true);
-                        }
-                    });
-                } else {
-                    writeResponse(request.getId(),"Service not found", true);
-                }
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                        writeResponse(request.getId(),"Reflection problem", true);
+                    }
+                });
             }
-        }catch(Exception e){
+        } catch(Exception e) {
             clientSocket.close();
         }
+    }
+
+    private void setStreams(Socket socket) throws IOException {
+        setObjectOutputStream(socket);
+        setObjectInputStream(socket);
     }
 
     private void setObjectOutputStream(Socket clientSocket) throws IOException {
@@ -64,12 +66,12 @@ class ClientHandler {
         }
     }
 
-    private Request readRequest() throws IOException, ClassNotFoundException {
+    private Request readRequest() throws ClassNotFoundException {
         try {
             Request request = (Request) objectInputStream.readObject();
             logger.info("Request from client : " + request.getId() + " " + request.getService() + " " + request.getMethod());
             return request;
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             Thread.interrupted();
             return null;
         }
