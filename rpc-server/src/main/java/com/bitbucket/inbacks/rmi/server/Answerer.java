@@ -31,23 +31,8 @@ public class Answerer {
     private Class getServiceClass() throws ServiceNotFoundException {
         try {
             return Class.forName(service);
-        } catch (ClassNotFoundException | NullPointerException e) {
+        } catch (ClassNotFoundException e) {
             throw new ServiceNotFoundException();
         }
     }
-
-//    public Object checking(String serviceName, String methodName) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-//        try {
-//            Class serviceClass = Class.forName(serviceName);
-//            Method method = serviceClass.getDeclaredMethod(methodName);
-//            Object obj = method.invoke(serviceClass.newInstance());
-//            return obj;
-//        } catch (ClassNotFoundException e) {
-//
-//        }
-//        Class serviceClass = Class.forName(serviceName);
-//        Method method = serviceClass.getDeclaredMethod(methodName);
-//        Object obj = method.invoke(serviceClass.newInstance());
-//        return obj;
-//    }
 }
