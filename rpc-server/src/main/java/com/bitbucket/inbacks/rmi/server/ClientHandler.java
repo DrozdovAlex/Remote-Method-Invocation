@@ -20,7 +20,7 @@ class ClientHandler {
     private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    void handle(Socket clientSocket, Properties properties) throws IOException, ClassNotFoundException {
+    void handle(Socket clientSocket, Properties properties) throws IOException {
         try {
             setObjectOutputStream(clientSocket);
             setObjectInputStream(clientSocket);

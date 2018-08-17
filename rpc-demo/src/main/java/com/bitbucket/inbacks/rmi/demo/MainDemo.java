@@ -11,7 +11,7 @@ public class MainDemo {
         server.run();
         Client client = new Client();
         client.run();
-        for (int i = 0; i < 2 ; i++) {
+        for (int i = 0; i < 5 ; i++) {
             new Thread(new Caller(client)).start();
         }
     }
