@@ -28,19 +28,19 @@ public class CorrectErrorFlagTest {
 
     @Test
     public void shouldSetTrueForWrongServiceName() {
-        assertTrue(((Response) client.remoteCall(1111, ILLEGAL_SERVICE_NAME, LEGAL_METHOD_NAME, new Object[]{}))
+        assertTrue(((Response) client.remoteCall(ILLEGAL_SERVICE_NAME, LEGAL_METHOD_NAME, new Object[]{}))
                 .hasError());
     }
 
     @Test
     public void shouldSetTrueForWrongMethodName() {
-        assertTrue(((Response) client.remoteCall(1111, LEGAL_SERVICE_NAME, ILLEGAL_METHOD_NAME, new Object[]{}))
+        assertTrue(((Response) client.remoteCall(LEGAL_SERVICE_NAME, ILLEGAL_METHOD_NAME, new Object[]{}))
                 .hasError());
     }
 
     @Test
     public void shouldSetFalseForExistingServiceAndMethod() {
-        assertFalse(((Response) client.remoteCall(1111, LEGAL_SERVICE_NAME, LEGAL_METHOD_NAME, new Object[]{}))
+        assertFalse(((Response) client.remoteCall(LEGAL_SERVICE_NAME, LEGAL_METHOD_NAME, new Object[]{}))
                 .hasError());
     }
 
