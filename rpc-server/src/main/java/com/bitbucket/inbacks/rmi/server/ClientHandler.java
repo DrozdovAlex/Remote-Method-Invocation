@@ -30,7 +30,6 @@ class ClientHandler {
 
                 pool.execute(() -> {
                     try {
-                        System.out.println(properties.getProperty(request.getService()));
                         writeResponse(request.getId(),
                                 new Answerer(properties.getProperty(request.getService()), request.getMethod()).getAnswer(),
                                 false);

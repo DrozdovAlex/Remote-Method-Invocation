@@ -31,7 +31,7 @@ public class Answerer {
     private Class getServiceClass() throws ServiceNotFoundException {
         try {
             return Class.forName(service);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | NullPointerException e) {
             throw new ServiceNotFoundException();
         }
     }
