@@ -39,26 +39,20 @@ public class Server {
     public void run() {
         new Thread(() -> {
             while (!Thread.interrupted() || !serverSocket.isClosed()) {
-                startClientHandler();
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    startClientHandler(clientSocket);
+                } catch (IOException e) {
+                    //logger.error("Can't get client socket from server socket");
+                }
             }
         }).start();
     }
 
-    private void startClientHandler() {
-         try {
-             new ClientHandler().handle(getClientSocket(), properties);
-         } catch (IOException e) {
-             Thread.interrupted();
-         }
-    }
-
-    private Socket getClientSocket() throws SocketException {
-        try {
-            return serverSocket.accept();
-        } catch (IOException e) {
-            logger.error("Can't get client socket from server socket");
-            throw new SocketException();
-        }
+    private void startClientHandler(Socket socket) {
+        new Thread(() -> {
+            new ClientHandler().handle(socket, properties);
+        }).start();
     }
 
     public void disconnect() throws IOException {

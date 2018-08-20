@@ -25,11 +25,9 @@ public class MainDemo {
         }
 
         public void run() {
-            int i = 0;
-            while(i < 5) {
+            while(true) {
                 logger.info("Current Date is:" + c.remoteCall( "Service", "getDate", new Object[]{}));
-                //logger.info("Name is:" + c.remoteCall( "Service", "getHostName", new Object[]{}));
-                i++;
+                logger.info("Name is:" + c.remoteCall( "Service", "getHostName", new Object[]{}));
             }
         }
     }
