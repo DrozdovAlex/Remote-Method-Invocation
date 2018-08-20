@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.gmail.vip.alexd.rpc</groupId>
-            <artifactId>rpc-server</artifactId>
+            <artifactId>rpc-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

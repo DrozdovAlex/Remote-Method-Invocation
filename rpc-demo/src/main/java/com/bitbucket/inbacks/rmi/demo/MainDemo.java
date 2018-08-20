@@ -11,7 +11,7 @@ public class MainDemo {
         server.run();
         Client client = new Client();
         client.run();
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < 2 ; i++) {
             new Thread(new Caller(client)).start();
         }
     }
@@ -25,9 +25,11 @@ public class MainDemo {
         }
 
         public void run() {
-            while(true) {
+            int i = 0;
+            while(i < 5) {
                 logger.info("Current Date is:" + c.remoteCall( "Service", "getDate", new Object[]{}));
-                logger.info("Name is:" + c.remoteCall( "Service", "getHostName", new Object[]{}));
+                //logger.info("Name is:" + c.remoteCall( "Service", "getHostName", new Object[]{}));
+                i++;
             }
         }
     }

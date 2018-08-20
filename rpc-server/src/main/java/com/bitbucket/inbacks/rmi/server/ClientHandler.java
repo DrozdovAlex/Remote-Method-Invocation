@@ -2,6 +2,8 @@ package com.bitbucket.inbacks.rmi.server;
 
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
+import com.bitbucket.inbacks.rmi.server.exception.MethodNotFoundException;
+import com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
@@ -16,73 +18,84 @@ import java.util.concurrent.Executors;
 class ClientHandler {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private CheckingRequest checkingRequest;
     private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    void handle(Socket clientSocket, Properties properties) throws IOException {
-        try {
-            setObjectOutputStream(clientSocket);
-            setObjectInputStream(clientSocket);
+    public void handle(Socket clientSocket, Properties properties) {
+        setStreams(clientSocket);
 
-            while (objectInputStream != null) {
+        while (objectInputStream != null) {
+            try {
                 Request request = readRequest();
 
-                if (properties.containsKey(request.getService())) {
-                    pool.execute(() -> {
-                        try {
-                            checkingRequest = new CheckingRequest();
-                            writeResponse(request.getId(), checkingRequest.checking(properties.getProperty(request.getService()),
-                                    request.getMethod()), false);
-                        } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException |
-                                IllegalAccessException | InstantiationException e) {
-                            writeResponse(request.getId(),"Method not found", true);
-                        }
-                    });
-                } else {
-                    writeResponse(request.getId(),"Service not found", true);
-                }
+                pool.execute(() -> {
+                    try {
+                        writeResponse(clientSocket, request.getId(),
+                                new Answerer(properties.getProperty(request.getService()), request.getMethod()).getAnswer(),
+                                false);
+                    } catch (ServiceNotFoundException e) {
+                        writeResponse(clientSocket, request.getId(),"Service not found", true);
+                    } catch (MethodNotFoundException e) {
+                        writeResponse(clientSocket, request.getId(),"Method not found", true);
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                        writeResponse(clientSocket, request.getId(),"Reflection problem", true);
+                    }
+                });
+            } catch (IOException | ClassNotFoundException e) {
+                logger.error("Problem while reading object from input stream", e);
+                completeHandle(clientSocket);
+                return;
             }
-        }catch(Exception e){
-            clientSocket.close();
         }
     }
 
-    private void setObjectOutputStream(Socket clientSocket) throws IOException {
+    private void completeHandle(Socket socket) {
+        try {
+            socket.close();
+            Thread.interrupted();
+        } catch (IOException e) {
+            logger.error("Completing work with client failed", e);
+        }
+    }
+
+    private void setStreams(Socket socket) {
+        setObjectOutputStream(socket);
+        setObjectInputStream(socket);
+    }
+
+    private void setObjectOutputStream(Socket clientSocket) {
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
-            clientSocket.close();
+            logger.error("Problem while getting output stream from the client socket", e);
+            completeHandle(clientSocket);
         }
     }
 
-    private void setObjectInputStream(Socket clientSocket) throws IOException {
+    private void setObjectInputStream(Socket clientSocket) {
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
-            clientSocket.close();
+            logger.error("Problem while getting input stream from the client socket", e);
+            completeHandle(clientSocket);
         }
     }
 
     private Request readRequest() throws IOException, ClassNotFoundException {
-        try {
-            Request request = (Request) objectInputStream.readObject();
-            logger.info("Request from client : " + request.getId() + " " + request.getService() + " " + request.getMethod());
-            return request;
-        } catch (IOException e) {
-            Thread.interrupted();
-            return null;
-        }
+        Request request = (Request) objectInputStream.readObject();
+        logger.info("Request from client : {}", request);
+        return request;
     }
 
-    private void writeResponse(int id, Object answer, boolean hasError) {
-        synchronized (objectOutputStream) {
-            try {
+    private void writeResponse(Socket socket, int id, Object answer, boolean hasError) {
+        try {
+            synchronized (objectInputStream) {
                 objectOutputStream.writeObject(new Response(id, answer, hasError));
                 objectOutputStream.flush();
-            } catch (IOException e) {
-                Thread.interrupted();
             }
+        } catch (IOException e) {
+            logger.error("Problem while write response to the output stream", e);
+            completeHandle(socket);
         }
     }
 }

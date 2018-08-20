@@ -9,16 +9,5 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rpc-server</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.gmail.vip.alexd.rpc</groupId>
-            <artifactId>rpc-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.gmail.vip.alexd.rpc</groupId>
-            <artifactId>rpc-service</artifactId>
-        </dependency>
-    </dependencies>
+    <artifactId>rpc-service</artifactId>
 </project>

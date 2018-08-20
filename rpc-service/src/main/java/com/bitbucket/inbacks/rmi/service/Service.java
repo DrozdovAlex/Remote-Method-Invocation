@@ -1,4 +1,4 @@
-package com.bitbucket.inbacks.rmi.server;
+package com.bitbucket.inbacks.rmi.service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
