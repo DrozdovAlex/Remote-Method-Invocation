@@ -45,13 +45,11 @@ public class Server {
     }
 
     private void startClientHandler() {
-        new Thread(() -> {
-            try {
-                new ClientHandler().handle(getClientSocket(), properties);
-            } catch (IOException e) {
-                Thread.interrupted();
-            }
-        }).start();
+         try {
+             new ClientHandler().handle(getClientSocket(), properties);
+         } catch (IOException e) {
+             Thread.interrupted();
+         }
     }
 
     private Socket getClientSocket() throws SocketException {
