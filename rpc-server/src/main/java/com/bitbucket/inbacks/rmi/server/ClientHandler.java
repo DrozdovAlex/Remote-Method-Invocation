@@ -21,7 +21,7 @@ class ClientHandler {
     private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    public void handle(Socket clientSocket, Properties properties) throws IOException {
+    public void handle(Socket clientSocket, Properties properties) {
         setStreams(clientSocket);
 
         while (objectInputStream != null) {
@@ -30,23 +30,21 @@ class ClientHandler {
 
                 pool.execute(() -> {
                     try {
-                        writeResponse(request.getId(),
+                        writeResponse(clientSocket, request.getId(),
                                 new Answerer(properties.getProperty(request.getService()), request.getMethod()).getAnswer(),
                                 false);
                     } catch (ServiceNotFoundException e) {
-                        writeResponse(request.getId(),"Service not found", true);
+                        writeResponse(clientSocket, request.getId(),"Service not found", true);
                     } catch (MethodNotFoundException e) {
-                        writeResponse(request.getId(),"Method not found", true);
+                        writeResponse(clientSocket, request.getId(),"Method not found", true);
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        writeResponse(request.getId(),"Reflection problem", true);
+                        writeResponse(clientSocket, request.getId(),"Reflection problem", true);
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
                 logger.error("Problem while reading object from input stream", e);
+                completeHandle(clientSocket);
                 return;
-            } finally {
-                clientSocket.close();
-                Thread.interrupted();
             }
         }
     }
@@ -89,14 +87,15 @@ class ClientHandler {
         return request;
     }
 
-    private void writeResponse(int id, Object answer, boolean hasError) {
-        synchronized (objectOutputStream) {
-            try {
+    private void writeResponse(Socket socket, int id, Object answer, boolean hasError) {
+        try {
+            synchronized (objectInputStream) {
                 objectOutputStream.writeObject(new Response(id, answer, hasError));
                 objectOutputStream.flush();
-            } catch (IOException e) {
-                Thread.interrupted();
             }
+        } catch (IOException e) {
+            logger.error("Problem while write response to the output stream", e);
+            completeHandle(socket);
         }
     }
 }
