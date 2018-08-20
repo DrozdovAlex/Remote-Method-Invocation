@@ -114,6 +114,8 @@ public class Client {
     }
 
     public void disconnect() throws IOException {
-        socket.close();
+        if (!socket.isClosed()) {
+            socket.close();
+        }
     }
 }

@@ -63,7 +63,7 @@ public class RemoteCallTest {
     }
 
     @After
-    public void tearDown() throws IOException, InterruptedException {
+    public void tearDown() throws IOException {
         client.disconnect();
         server.disconnect();
     }

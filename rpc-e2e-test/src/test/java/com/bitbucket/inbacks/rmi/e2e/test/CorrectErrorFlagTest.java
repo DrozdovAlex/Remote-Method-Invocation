@@ -46,6 +46,7 @@ public class CorrectErrorFlagTest {
 
     @After
     public void tearDown() throws Exception {
+        client.disconnect();
         server.disconnect();
     }
 }
