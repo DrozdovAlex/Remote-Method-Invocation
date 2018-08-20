@@ -45,29 +45,41 @@ class ClientHandler {
                 logger.error("Problem while reading object from input stream", e);
                 return;
             } finally {
+                clientSocket.close();
                 Thread.interrupted();
             }
         }
     }
 
-    private void setStreams(Socket socket) throws IOException {
+    private void completeHandle(Socket socket) {
+        try {
+            socket.close();
+            Thread.interrupted();
+        } catch (IOException e) {
+            logger.error("Completing work with client failed", e);
+        }
+    }
+
+    private void setStreams(Socket socket) {
         setObjectOutputStream(socket);
         setObjectInputStream(socket);
     }
 
-    private void setObjectOutputStream(Socket clientSocket) throws IOException {
+    private void setObjectOutputStream(Socket clientSocket) {
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
-            clientSocket.close();
+            logger.error("Problem while getting output stream from the client socket", e);
+            completeHandle(clientSocket);
         }
     }
 
-    private void setObjectInputStream(Socket clientSocket) throws IOException {
+    private void setObjectInputStream(Socket clientSocket) {
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
-            clientSocket.close();
+            logger.error("Problem while getting input stream from the client socket", e);
+            completeHandle(clientSocket);
         }
     }
 
