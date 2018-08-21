@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +20,6 @@ public class Client {
     private final String HOST;
     private final int PORT;
 
-    private Properties properties;
     private Socket socket;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
@@ -83,12 +81,15 @@ public class Client {
 
     public Object remoteCall(String service, String method,  Object[] params) {
         int id = new Random().nextInt(10000000);
+
         try {
-            logger.info("Your request : {} {} {}", id, service, method);
+            Request request = new Request(id, service, method, params);
+
+            logger.info("Your request : {}", request);
 
             responses.put(id, new CompletableFuture<>());
             synchronized (objectOutputStream) {
-                objectOutputStream.writeObject(new Request(id, service, method, params));
+                objectOutputStream.writeObject(request);
                 objectOutputStream.flush();
             }
             return responses.get(id).get();

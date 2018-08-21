@@ -41,7 +41,7 @@ public class Server {
                     Socket clientSocket = serverSocket.accept();
                     startClientHandler(clientSocket);
                 } catch (IOException e) {
-                    //logger.error("Can't get client socket from server socket");
+                    logger.error("Can't get client socket from server socket");
                 }
             }
         }).start();

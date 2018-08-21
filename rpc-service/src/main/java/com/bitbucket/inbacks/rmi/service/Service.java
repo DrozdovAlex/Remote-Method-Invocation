@@ -18,8 +18,15 @@ public class Service {
         return "vip.alexd@gmail.com";
     }
 
-    public String getSleep() throws InterruptedException {
+    public void sleep1000() throws InterruptedException {
         Thread.sleep(1000);
-        return null;
+    }
+
+    public void sleep(Long millis) throws InterruptedException {
+        Thread.sleep(millis.longValue());
+    }
+
+    public Integer mult(Integer number1, Integer number2) {
+        return number1 * number2;
     }
 }
