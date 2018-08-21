@@ -6,21 +6,19 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Properties;
 
 public class Server {
     private final String PROPERTY_FILE_NAME = "/server.properties";
-    private final String PORT = "rpc.port";
 
     private ServerSocket serverSocket;
     private Properties properties;
 
     private Logger logger = LogManager.getLogger(Server.class.getName());
 
-    public Server() throws IOException {
+    public Server(int PORT) throws IOException {
         loadProperties();
-        setServerSocket();
+        setServerSocket(PORT);
     }
 
     private void loadProperties() {
@@ -32,8 +30,8 @@ public class Server {
         }
     }
 
-    private void setServerSocket() throws IOException {
-        serverSocket = new ServerSocket(Integer.parseInt(properties.getProperty(PORT)));
+    private void setServerSocket(int PORT) throws IOException {
+        serverSocket = new ServerSocket(PORT);
     }
 
     public void run() {

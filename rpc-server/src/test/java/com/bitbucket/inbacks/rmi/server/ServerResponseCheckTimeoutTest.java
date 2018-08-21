@@ -14,7 +14,7 @@ public class ServerResponseCheckTimeoutTest {
 
     @Before
     public void setUp() throws Exception {
-        server = new Server();
+        server = new Server(4444);
         server.run();
     }
 
