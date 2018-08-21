@@ -16,8 +16,11 @@ public class Answerer {
     }
 
     public Object getAnswer() throws  MethodNotFoundException, ServiceNotFoundException, InstantiationException,
-            IllegalAccessException, InvocationTargetException{
-            return getServiceMethod().invoke(getServiceClass().newInstance());
+            IllegalAccessException, InvocationTargetException {
+        if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
+            return "Return type of this method is void";
+        }
+        return getServiceMethod().invoke(getServiceClass().newInstance());
     }
 
     private Method getServiceMethod() throws ServiceNotFoundException, MethodNotFoundException {
