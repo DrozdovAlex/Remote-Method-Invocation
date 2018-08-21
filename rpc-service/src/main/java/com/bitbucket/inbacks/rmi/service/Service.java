@@ -25,4 +25,8 @@ public class Service {
     public void sleep(Long millis) throws InterruptedException {
         Thread.sleep(millis.longValue());
     }
+
+    public Integer mult(Integer number1, Integer number2) {
+        return number1 * number2;
+    }
 }

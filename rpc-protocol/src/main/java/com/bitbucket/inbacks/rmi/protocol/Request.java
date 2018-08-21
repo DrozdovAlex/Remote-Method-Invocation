@@ -41,7 +41,7 @@ public class Request implements Serializable{
         String result = "";
 
         for (Object parameter : parameters) {
-            result = String.format(result + " %o", parameter);
+            result = String.format(result + " %s", parameter);
         }
         return result;
     }

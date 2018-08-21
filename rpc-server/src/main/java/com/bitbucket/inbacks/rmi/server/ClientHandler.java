@@ -31,7 +31,9 @@ class ClientHandler {
                 pool.execute(() -> {
                     try {
                         writeResponse(clientSocket, request.getId(),
-                                new Answerer(properties.getProperty(request.getService()), request.getMethod(), request.getParameters())
+                                new Answerer(properties.getProperty(request.getService()),
+                                        request.getMethod(),
+                                        request.getParameters())
                                         .getAnswer(),
                                 false);
                     } catch (ServiceNotFoundException e) {
