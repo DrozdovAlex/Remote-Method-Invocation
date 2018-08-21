@@ -20,7 +20,7 @@ public class CorrectErrorFlagTest {
 
     @Before
     public void setUp() throws Exception {
-        server = new Server();
+        server = new Server(4444);
         server.run();
         client = new Client("localhost", 4444);
         client.run();
