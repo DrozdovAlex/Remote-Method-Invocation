@@ -22,7 +22,7 @@ public class CorrectErrorFlagTest {
     public void setUp() throws Exception {
         server = new Server();
         server.run();
-        client = new Client();
+        client = new Client("localhost", 4444);
         client.run();
     }
 

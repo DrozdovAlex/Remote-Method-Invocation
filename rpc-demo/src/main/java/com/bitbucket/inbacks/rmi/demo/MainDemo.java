@@ -9,7 +9,7 @@ public class MainDemo {
     public static void main(String[] args) throws Exception {
         Server server = new Server();
         server.run();
-        Client client = new Client();
+        Client client = new Client("localhost", 4444);
         client.run();
         for (int i = 0; i < 2 ; i++) {
             new Thread(new Caller(client)).start();

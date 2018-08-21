@@ -26,10 +26,10 @@ public class HighLoadTest {
     @Test
     public void shouldSetTrueForAllRequestsFromOneClient() throws Exception {
         int i;
-        client = new Client();
+        client = new Client("localhost", 4444);
         client.run();
 
-        for (i = 0; i <200; i++) {
+        for (i = 0; i <10; i++) {
             CompletableFuture cf = CompletableFuture.runAsync(() -> {
                 logger.info(client.remoteCall("Service", "getHostName", new Object[]{}));
             });
@@ -42,10 +42,10 @@ public class HighLoadTest {
     @Test
     public void shouldSetTrueForAllRequestsFromManyClients() throws Exception {
         int i;
-        for (i = 0; i <200; i++) {
+        for (i = 0; i <10; i++) {
             CompletableFuture cf = CompletableFuture.runAsync(() -> {
                 try {
-                    client1 = new Client();
+                    client1 = new Client("localhost", 4444);
                     client1.run();
                     logger.info(client1.remoteCall("Service", "getDate", new Object[]{}));
                 } catch (IOException e) {

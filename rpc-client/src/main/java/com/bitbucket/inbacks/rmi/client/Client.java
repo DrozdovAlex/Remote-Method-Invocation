@@ -18,9 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 public class Client {
-    private final String PROPERTY_FILE_NAME = "/server.properties";
-    private final String HOST = "rpc.host";
-    private final String PORT = "rpc.port";
+    private final String HOST;
+    private final int PORT;
 
     private Properties properties;
     private Socket socket;
@@ -30,18 +29,10 @@ public class Client {
 
     private Logger logger = LogManager.getLogger(Client.class.getName());
 
-    public Client() throws IOException {
-        loadProperties();
+    public Client(String host, int port) {
+        this.HOST = host;
+        this.PORT = port;
         responses = new ConcurrentHashMap<>();
-    }
-
-    private void loadProperties() {
-        properties = new Properties();
-        try {
-            properties.load(getClass().getResourceAsStream(PROPERTY_FILE_NAME));
-        } catch (IOException e) {
-            logger.warn("Can not extract properties from the {}", PROPERTY_FILE_NAME);
-        }
     }
 
     public void run() throws IOException {
@@ -70,9 +61,8 @@ public class Client {
     }
 
     private void setSocket() throws IOException {
-        logger.info(properties.getProperty(HOST) + " " + properties.getProperty(PORT));
-        socket = new Socket(properties.getProperty(HOST),
-                Integer.parseInt(properties.getProperty(PORT)));
+        logger.info(HOST + " " + PORT);
+        socket = new Socket(HOST, PORT);
     }
 
     public void setObjectOutputStream() {
