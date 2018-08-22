@@ -23,10 +23,7 @@ public class ServerResponseCheckTimeoutTest {
         Client client = new Client("localhost", 4444);
         client.run();
         for (int i = 0; i <10; i++) {
-            CompletableFuture cf = CompletableFuture.runAsync(() -> {
                 logger.info(client.remoteCall("Service", "getHostName", new Object[]{}));
-            });
-            cf.get();
         }
     }
 
