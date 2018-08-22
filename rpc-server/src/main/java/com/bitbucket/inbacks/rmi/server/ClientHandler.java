@@ -45,9 +45,9 @@ class ClientHandler {
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
-                logger.error("Problem while reading object from input stream");
+                logger.warn("Problem while reading object from input stream");
                 completeHandle(clientSocket);
-                return;
+                break;
             }
         }
     }
