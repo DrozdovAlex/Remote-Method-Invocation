@@ -34,14 +34,13 @@ class ClientHandler {
                                 new Answerer(properties.getProperty(request.getService()),
                                         request.getMethod(),
                                         request.getParameters())
-                                        .getAnswer(),
-                                false);
+                                        .getAnswer());
                     } catch (ServiceNotFoundException e) {
-                        writeResponse(clientSocket, request.getId(),"Service not found", true);
+                        writeResponse(clientSocket, request.getId(),"Service not found");
                     } catch (MethodNotFoundException e) {
-                        writeResponse(clientSocket, request.getId(),"Method not found", true);
+                        writeResponse(clientSocket, request.getId(),"Method not found");
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        writeResponse(clientSocket, request.getId(),"Reflection problem", true);
+                        writeResponse(clientSocket, request.getId(),"Reflection problem");
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
@@ -90,10 +89,10 @@ class ClientHandler {
         return request;
     }
 
-    private void writeResponse(Socket socket, int id, Object answer, boolean hasError) {
+    private void writeResponse(Socket socket, int id, Object answer) {
         try {
             synchronized (objectInputStream) {
-                objectOutputStream.writeObject(new Response(id, answer, hasError));
+                objectOutputStream.writeObject(new Response(id, answer));
                 objectOutputStream.flush();
             }
         } catch (IOException e) {
