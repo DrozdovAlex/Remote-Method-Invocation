@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 public class Client {
+    private final static int BOUND_FOR_ID_GENERATION = 10000000;
     private final String HOST;
     private final int PORT;
 
@@ -44,8 +45,7 @@ public class Client {
                 try {
                     response = (Response) objectInputStream.readObject();
                     if (response.hasError()){
-                        logger.error("Error: "+ response.getAnswer());
-                        Thread.interrupted();
+                        logger.warn(response.getAnswer());
                     }
                     responses.get(response.getId()).complete(response);
                 } catch (SocketException e) {
@@ -53,6 +53,7 @@ public class Client {
                     break;
                 } catch (IOException | ClassNotFoundException e) {
                     logger.error("Problem while reading object from input stream");
+                    break;
                 }
             }
         }).start();
@@ -68,6 +69,7 @@ public class Client {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             logger.warn("Problem with opening of output stream", e);
+            disconnect();
         }
     }
 
@@ -76,11 +78,12 @@ public class Client {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             logger.warn("Problem with opening of input stream", e);
+            disconnect();
         }
     }
 
     public Object remoteCall(String service, String method,  Object[] params) {
-        int id = new Random().nextInt(10000000);
+        int id = new Random().nextInt(BOUND_FOR_ID_GENERATION);
 
         try {
             Request request = new Request(id, service, method, params);
@@ -95,18 +98,24 @@ public class Client {
             return responses.get(id).get();
         } catch (IOException e) {
             logger.warn("Problem while writing object to output stream" , e);
-            return null;
+            disconnect();
+            return new Response(id, "Problem with connection", true);
         } catch (InterruptedException | ExecutionException e) {
             logger.warn("Problem with extracting response from the map" , e);
-            return null;
+            disconnect();
+            return new Response(id, "Problem with connection", true);
         } finally {
             responses.remove(id);
         }
     }
 
-    public void disconnect() throws IOException {
-        if (!socket.isClosed()) {
-            socket.close();
+    public void disconnect() {
+        try {
+            if (!socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            logger.error("Problem while client disconnect", e);
         }
     }
 }
