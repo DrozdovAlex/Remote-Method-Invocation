@@ -7,11 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
 
 public class RemoteCallTest {
+    private static final int PORT = 4444;
     private static final String SERVICE_NAME = "Service";
     private static final String WRONG_SERVICE_NAME = SERVICE_NAME.concat("Wrong");
     private static final String MAIL = "vip.alexd@gmail.com";
@@ -28,10 +27,10 @@ public class RemoteCallTest {
     private Client client;
 
     @Before
-    public void setUp() throws Exception {
-        server = new Server(4444);
+    public void setUp() {
+        server = new Server(PORT);
         server.run();
-        client = new Client("localhost", 4444);
+        client = new Client("localhost", PORT);
         client.run();
     }
 
@@ -64,7 +63,7 @@ public class RemoteCallTest {
     }
 
     @After
-    public void tearDown() throws IOException {
+    public void tearDown() {
         client.disconnect();
         server.disconnect();
     }

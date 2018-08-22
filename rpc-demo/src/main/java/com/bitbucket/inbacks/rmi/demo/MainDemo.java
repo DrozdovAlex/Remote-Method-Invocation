@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainDemo {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Server server = new Server(4444);
         server.run();
         Client client = new Client("localhost", 4444);

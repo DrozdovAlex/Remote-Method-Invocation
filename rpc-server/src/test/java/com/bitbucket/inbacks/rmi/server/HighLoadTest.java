@@ -6,62 +6,43 @@ import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import static junit.framework.TestCase.assertEquals;
+import java.util.concurrent.ExecutionException;
 
 public class HighLoadTest {
+    private final static int NUMBER_OF_CLIENTS = 100;
+    private final static int NUMBER_IF_REQUESTS_PER_CLIENT = 5;
+    private final static int PORT = 4444;
+
     private Server server;
-    private Client client;
-    private Client client1;
-    private int remoteCallCounter;
     private Logger logger = LogManager.getLogger(HighLoadTest.class);
 
     @Before
-    public void setUp() throws Exception {
-        server = new Server(4444);
+    public void setUp() {
+        server = new Server(PORT);
         server.run();
     }
 
     @Test
-    public void shouldSetTrueForAllRequestsFromOneClient() throws Exception {
-        int i;
-        client = new Client("localhost", 4444);
-        client.run();
+    public void shouldHandleRequestsFromManyClients() throws InterruptedException,
+            ExecutionException {
+        CompletableFuture[] futures = new CompletableFuture[NUMBER_OF_CLIENTS];
 
-        for (i = 0; i <10; i++) {
-            CompletableFuture cf = CompletableFuture.runAsync(() -> {
-                logger.info(client.remoteCall("Service", "getHostName", new Object[]{}));
-            });
-            cf.get();
-            remoteCallCounter++;
-        }
-        assertEquals(i, remoteCallCounter);
-    }
-
-    @Test
-    public void shouldSetTrueForAllRequestsFromManyClients() throws Exception {
-        int i;
-        for (i = 0; i <10; i++) {
-            CompletableFuture cf = CompletableFuture.runAsync(() -> {
-                try {
-                    client1 = new Client("localhost", 4444);
-                    client1.run();
-                    logger.info(client1.remoteCall("Service", "getDate", new Object[]{}));
-                } catch (IOException e) {
-                    e.printStackTrace();
+        for (int i = 0; i < NUMBER_OF_CLIENTS; i++) {
+            futures[i] = CompletableFuture.runAsync(() -> {
+                Client client = new Client("localhost", PORT);
+                client.run();
+                for (int j = 0; j < NUMBER_IF_REQUESTS_PER_CLIENT; j++) {
+                    logger.info(client.remoteCall("Service",
+                            "getCurrentDate", new Object[]{}));
                 }
-
             });
-            cf.get();
-            remoteCallCounter++;
         }
-        assertEquals(i, remoteCallCounter);
+        CompletableFuture.allOf(futures).thenAccept(v -> { }).get();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         server.disconnect();
     }
-
 }
