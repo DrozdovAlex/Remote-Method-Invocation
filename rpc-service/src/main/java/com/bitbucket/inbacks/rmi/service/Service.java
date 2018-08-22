@@ -26,7 +26,7 @@ public class Service {
         Thread.sleep(millis.longValue());
     }
 
-    public Integer mult(Integer number1, Integer number2) {
+    public Integer multiplication(Integer number1, Integer number2) {
         return number1 * number2;
     }
 }
