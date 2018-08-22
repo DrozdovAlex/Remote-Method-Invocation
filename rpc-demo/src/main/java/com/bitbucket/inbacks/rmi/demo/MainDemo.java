@@ -27,7 +27,7 @@ public class MainDemo {
         public void run() {
             while(true) {
                 c.remoteCall("Service", "sleep", new Object[] {new Long(1000)});
-                logger.info("Current Date is: " + c.remoteCall( "Service", "getDatey", new Object[]{}));
+                logger.info("Current Date is: " + c.remoteCall( "Service", "getCurrentDate", new Object[]{}));
             }
         }
     }
