@@ -23,9 +23,9 @@ public class RemoteCallTest {
     private static final String WRONG_METHOD_NAME = GET_MAIL_METHOD.concat("Wrong");
     private static final String SERVICE_NOT_FOUND = "Service not found";
     private static final String METHOD_NOT_FOUND = "Method not found";
-    private static final int FIRST_MULTIPLIER = 10;
-    private static final int SECOND_MULTIPLIER = 5;
-    private static final int EXPECTED_RESULT = FIRST_MULTIPLIER * SECOND_MULTIPLIER;
+    private static final Integer FIRST_MULTIPLIER = new Integer(10);
+    private static final Integer SECOND_MULTIPLIER = new Integer(5);
+    private static final Integer EXPECTED_RESULT = FIRST_MULTIPLIER * SECOND_MULTIPLIER;
 
     private Server server;
     private Client client;
