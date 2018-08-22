@@ -34,7 +34,7 @@ public class Client {
         responses = new ConcurrentHashMap<>();
     }
 
-    public void run() throws IOException {
+    public void run() {
         setSocket();
         setObjectOutputStream();
         setObjectInputStream();
@@ -56,9 +56,13 @@ public class Client {
         }).start();
     }
 
-    private void setSocket() throws IOException {
+    private void setSocket() {
         logger.info(HOST + " " + PORT);
-        socket = new Socket(HOST, PORT);
+        try {
+            socket = new Socket(HOST, PORT);
+        } catch(IOException e) {
+            logger.error("Problem while opening client socket");
+        }
     }
 
     public void setObjectOutputStream() {

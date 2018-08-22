@@ -16,7 +16,7 @@ public class Server {
 
     private Logger logger = LogManager.getLogger(Server.class.getName());
 
-    public Server(int PORT) throws IOException {
+    public Server(int PORT) {
         loadProperties();
         setServerSocket(PORT);
     }
@@ -30,8 +30,12 @@ public class Server {
         }
     }
 
-    private void setServerSocket(int PORT) throws IOException {
-        serverSocket = new ServerSocket(PORT);
+    private void setServerSocket(int PORT) {
+        try {
+            serverSocket = new ServerSocket(PORT);
+        } catch (IOException e) {
+            logger.error("Problem while opening client socket");
+        }
     }
 
     public void run() {
@@ -54,7 +58,12 @@ public class Server {
         }).start();
     }
 
-    public void disconnect() throws IOException {
-        serverSocket.close();
+    public void disconnect() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            logger.error("Problem while server disconnect", e);
+        }
+
     }
 }
