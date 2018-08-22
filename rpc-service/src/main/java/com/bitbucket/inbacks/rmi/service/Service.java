@@ -1,29 +1,19 @@
 package com.bitbucket.inbacks.rmi.service;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+
 import java.util.Date;
 
 public class Service {
+    public void sleep(Long millis) throws InterruptedException {
+        Thread.sleep(millis.longValue());
+    }
 
-    public Date getDate() {
+    public Date getCurrentDate() {
         return new Date();
     }
 
-    public String getHostName() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostName();
-    }
-
-    public String getMail() {
+    public static String getMail() {
         return "vip.alexd@gmail.com";
-    }
-
-    public void sleep1000() throws InterruptedException {
-        Thread.sleep(1000);
-    }
-
-    public void sleep(Long millis) throws InterruptedException {
-        Thread.sleep(millis.longValue());
     }
 
     public Integer multiplication(Integer number1, Integer number2) {
