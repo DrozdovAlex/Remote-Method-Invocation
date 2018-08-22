@@ -17,11 +17,15 @@ public class RemoteCallTest {
     private static final String MAIL = "vip.alexd@gmail.com";
     private static final String GET_MAIL_METHOD = "getMail";
     private static final String GET_HOSTNAME_METHOD = "getHostName";
+    private static final String MULTIPLICATION_METHOD = "multiplication";
     private static final String SERVICE_NAME = "Service";
     private static final String WRONG_SERVICE_NAME = SERVICE_NAME.concat("Wrong");
     private static final String WRONG_METHOD_NAME = GET_MAIL_METHOD.concat("Wrong");
     private static final String SERVICE_NOT_FOUND = "Service not found";
     private static final String METHOD_NOT_FOUND = "Method not found";
+    private static final int FIRST_MULTIPLIER = 10;
+    private static final int SECOND_MULTIPLIER = 5;
+    private static final int EXPECTED_RESULT = FIRST_MULTIPLIER * SECOND_MULTIPLIER;
 
     private Server server;
     private Client client;
@@ -59,6 +63,13 @@ public class RemoteCallTest {
     public void shouldReturnMethodNotFoundWhenInvokeWithWrongMethod() {
         assertEquals(METHOD_NOT_FOUND,
                 ((Response) client.remoteCall(SERVICE_NAME, WRONG_METHOD_NAME, new Object[]{}))
+                        .getAnswer());
+    }
+
+    @Test
+    public void shouldReturnEqualsResult() {
+        assertEquals(EXPECTED_RESULT,
+                ((Response) client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER,SECOND_MULTIPLIER}))
                         .getAnswer());
     }
 
