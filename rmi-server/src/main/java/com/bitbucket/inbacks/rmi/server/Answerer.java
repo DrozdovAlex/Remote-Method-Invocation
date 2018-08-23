@@ -5,6 +5,7 @@ import com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class Answerer {
     private String service;
@@ -27,10 +28,55 @@ public class Answerer {
     }
 
     private Method getServiceMethod() throws ServiceNotFoundException, MethodNotFoundException {
+        checkMethodWithParameters();
         try {
             return getServiceClass().getDeclaredMethod(method, getParameterTypes());
         } catch (NoSuchMethodException e) {
-            throw new MethodNotFoundException();
+            throw new MethodNotFoundException("Illegal type of parameters");
+        }
+    }
+
+    private void checkMethodWithParameters() throws ServiceNotFoundException, MethodNotFoundException {
+        Method[] methods = getMethodsWithEqualName();
+
+        checkMethodName(methods);
+        checkParameters(methods);
+    }
+
+    private Method[] getMethodsWithEqualName() throws ServiceNotFoundException {
+        ArrayList<Method> methods = new ArrayList<>();
+
+        for (Method m : getMethods()) {
+            if (m.getName().equals(method)) {
+                methods.add(m);
+            }
+        }
+        return methods.toArray(new Method[0]);
+    }
+
+    private Method[] getMethods() throws ServiceNotFoundException {
+        return getServiceClass().getMethods();
+    }
+
+    private Class getServiceClass() throws ServiceNotFoundException {
+        try {
+            return Class.forName(service);
+        } catch (ClassNotFoundException | NullPointerException e) {
+            throw new ServiceNotFoundException("Illegal service name");
+        }
+    }
+
+    private void checkMethodName(Method[] methods) throws MethodNotFoundException {
+        if (methods.length == 0) {
+            throw new MethodNotFoundException("Illegal method name");
+        }
+    }
+
+    private void checkParameters(Method[] methods) throws MethodNotFoundException {
+        Method[] equalParametersNumberMethods = getEqualParameterNumberMethods(methods);
+
+        if (equalParametersNumberMethods.length == 0) {
+            throw new MethodNotFoundException("Illegal number of parameters");
         }
     }
 
@@ -43,11 +89,14 @@ public class Answerer {
         return parameterTypes;
     }
 
-    private Class getServiceClass() throws ServiceNotFoundException {
-        try {
-            return Class.forName(service);
-        } catch (ClassNotFoundException | NullPointerException e) {
-            throw new ServiceNotFoundException();
+    private Method[] getEqualParameterNumberMethods(Method[] methods) {
+        ArrayList<Method> equalParametersNumberMethods = new ArrayList<>();
+
+        for (Method m : methods) {
+            if (m.getParameterCount() == parameters.length) {
+                equalParametersNumberMethods.add(m);
+            }
         }
+        return equalParametersNumberMethods.toArray(new Method[0]);
     }
 }

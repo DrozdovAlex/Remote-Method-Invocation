@@ -100,11 +100,11 @@ public class Client {
         } catch (IOException e) {
             logger.warn("Problem while writing object to output stream" , e);
             disconnect();
-            return new Response(id, "Problem with connection");
+            return new Response(id,"Problem with connection");
         } catch (InterruptedException | ExecutionException e) {
             logger.warn("Problem with extracting response from the map" , e);
             disconnect();
-            return new Response(id, "Problem with connection");
+            return new Response(id,"Problem with connection");
         } finally {
             responses.remove(id);
         }
