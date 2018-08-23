@@ -17,8 +17,10 @@ public class RemoteCallTest {
     private static final String GET_MAIL_METHOD = "getMail";
     private static final String MULTIPLICATION_METHOD = "multiplication";
     private static final String WRONG_METHOD_NAME = GET_MAIL_METHOD.concat("Wrong");
-    private static final String SERVICE_NOT_FOUND = "Service not found";
-    private static final String METHOD_NOT_FOUND = "Method not found";
+    private static final String ILLEGAL_SERVICE_NAME = "Illegal service name";
+    private static final String ILLEGAL_METHOD_NAME = "Illegal method name";
+    private static final String ILLEGAL_NUMBER_OF_PARAMETERS = "Illegal number of parameters";
+    private static final String ILLEGAL_TYPE_OF_PARAMETERS = "Illegal type of parameters";
     private static final Integer FIRST_MULTIPLIER = new Integer(10);
     private static final Integer SECOND_MULTIPLIER = new Integer(5);
     private static final Integer EXPECTED_RESULT = FIRST_MULTIPLIER * SECOND_MULTIPLIER;
@@ -49,16 +51,30 @@ public class RemoteCallTest {
     }
 
     @Test
-    public void shouldReturnServiceNotFoundWhenInvokeWithWrongService() {
-        assertEquals(SERVICE_NOT_FOUND,
+    public void shouldReturnIllegalServiceNameWhenInvokeWithWrongService() {
+        assertEquals(ILLEGAL_SERVICE_NAME,
                 ((Response) client.remoteCall(WRONG_SERVICE_NAME, GET_MAIL_METHOD, new Object[]{}))
                         .getAnswer());
     }
 
     @Test
-    public void shouldReturnMethodNotFoundWhenInvokeWithWrongMethod() {
-        assertEquals(METHOD_NOT_FOUND,
+    public void shouldReturnIllegalMethodNameWhenInvokeWithWrongMethod() {
+        assertEquals(ILLEGAL_METHOD_NAME,
                 ((Response) client.remoteCall(SERVICE_NAME, WRONG_METHOD_NAME, new Object[]{}))
+                        .getAnswer());
+    }
+
+    @Test
+    public void shouldReturnIllegalNunmerOfParametersWhenInvokeWithWrongNumberOfParameters() {
+        assertEquals(ILLEGAL_NUMBER_OF_PARAMETERS,
+                ((Response) client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER}))
+                        .getAnswer());
+    }
+
+    @Test
+    public void shouldReturnIllegalTypeOfParametersWhenInvokeWithWrongTypeOfParameters() {
+        assertEquals(ILLEGAL_TYPE_OF_PARAMETERS,
+                ((Response) client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER, MAIL}))
                         .getAnswer());
     }
 

@@ -30,17 +30,17 @@ class ClientHandler {
 
                 pool.execute(() -> {
                     try {
-                        writeResponse(clientSocket, request.getId(),
+                        writeResponse(clientSocket, new Response(request.getId(),
                                 new Answerer(properties.getProperty(request.getService()),
                                         request.getMethod(),
                                         request.getParameters())
-                                        .getAnswer());
+                                        .getAnswer()));
                     } catch (ServiceNotFoundException e) {
-                        writeResponse(clientSocket, request.getId(),"Service not found");
+                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage()));
                     } catch (MethodNotFoundException e) {
-                        writeResponse(clientSocket, request.getId(),"Method not found");
+                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage()));
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        writeResponse(clientSocket, request.getId(),"Reflection problem");
+                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage()));
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
@@ -89,10 +89,10 @@ class ClientHandler {
         return request;
     }
 
-    private void writeResponse(Socket socket, int id, Object answer) {
+    private void writeResponse(Socket socket, Response response) {
         try {
             synchronized (objectInputStream) {
-                objectOutputStream.writeObject(new Response(id, answer));
+                objectOutputStream.writeObject(response);
                 objectOutputStream.flush();
             }
         } catch (IOException e) {
