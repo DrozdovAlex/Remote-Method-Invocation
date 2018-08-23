@@ -18,13 +18,20 @@ public class Answerer {
         this.parameters = parameters;
     }
 
-    public Object getAnswer() throws  MethodNotFoundException, ServiceNotFoundException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
-            getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
-            return "Return type of this method is void";
+    public Object getAnswer() throws  MethodNotFoundException, ServiceNotFoundException {
+        try {
+            if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
+                System.out.println(getServiceMethod().invoke(getServiceClass().newInstance(), parameters));
+                return "Return type of this method is void";
+            }
+            return getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
+        } catch(InstantiationException e) {
+            throw new ServiceNotFoundException("Access is denied");
+        } catch (IllegalAccessException e) {
+            throw new MethodNotFoundException("Access is denied");
+        } catch (InvocationTargetException e) {
+            throw new MethodNotFoundException("Failed when starting");
         }
-        return getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
     }
 
     private Method getServiceMethod() throws ServiceNotFoundException, MethodNotFoundException {

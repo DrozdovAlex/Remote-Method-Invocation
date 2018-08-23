@@ -1,5 +1,8 @@
 package com.bitbucket.inbacks.rmi.client;
 
+import com.bitbucket.inbacks.rmi.client.exception.FailedConnectionRuntimeException;
+import com.bitbucket.inbacks.rmi.client.exception.MethodNotFoundRuntimeException;
+import com.bitbucket.inbacks.rmi.client.exception.ServiceNotFoundRuntimeException;
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
 import org.apache.logging.log4j.LogManager;
@@ -96,15 +99,24 @@ public class Client {
                 objectOutputStream.writeObject(request);
                 objectOutputStream.flush();
             }
-            return responses.get(id).get();
+
+            Response response = (Response) responses.get(id).get();
+
+            switch (response.getErrorSpot()) {
+                case "service":
+                    throw new ServiceNotFoundRuntimeException(response.getAnswer().toString());
+                case "method":
+                    throw new MethodNotFoundRuntimeException(response.getAnswer().toString());
+            }
+            return response;
         } catch (IOException e) {
             logger.warn("Problem while writing object to output stream" , e);
             disconnect();
-            return new Response(id,"Problem with connection");
+            throw new FailedConnectionRuntimeException("Problem with connection");
         } catch (InterruptedException | ExecutionException e) {
             logger.warn("Problem with extracting response from the map" , e);
             disconnect();
-            return new Response(id,"Problem with connection");
+            throw new FailedConnectionRuntimeException("Problem with connection");
         } finally {
             responses.remove(id);
         }

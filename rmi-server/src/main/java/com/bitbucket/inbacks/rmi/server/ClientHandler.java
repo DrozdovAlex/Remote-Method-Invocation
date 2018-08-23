@@ -34,13 +34,13 @@ class ClientHandler {
                                 new Answerer(properties.getProperty(request.getService()),
                                         request.getMethod(),
                                         request.getParameters())
-                                        .getAnswer()));
+                                        .getAnswer(), "none"));
                     } catch (ServiceNotFoundException e) {
-                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage()));
+                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage(),
+                                "service"));
                     } catch (MethodNotFoundException e) {
-                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage()));
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage()));
+                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage(),
+                                "method"));
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
