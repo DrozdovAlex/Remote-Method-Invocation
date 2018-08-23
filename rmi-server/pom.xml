@@ -3,23 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>rpc</artifactId>
-        <groupId>com.gmail.vip.alexd.rpc</groupId>
+        <artifactId>rmi</artifactId>
+        <groupId>com.bitbucket.inbacks.rmi</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rpc-e2e-test</artifactId>
+    <artifactId>rmi-server</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.gmail.vip.alexd.rpc</groupId>
-            <artifactId>rpc-server</artifactId>
+            <groupId>com.bitbucket.inbacks.rmi</groupId>
+            <artifactId>rmi-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.gmail.vip.alexd.rpc</groupId>
-            <artifactId>rpc-client</artifactId>
+            <groupId>com.bitbucket.inbacks.rmi</groupId>
+            <artifactId>rmi-service</artifactId>
         </dependency>
     </dependencies>
-
 </project>

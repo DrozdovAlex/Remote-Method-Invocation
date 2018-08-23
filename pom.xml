@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gmail.vip.alexd.rpc</groupId>
-    <artifactId>rpc</artifactId>
+    <groupId>com.bitbucket.inbacks.rmi</groupId>
+    <artifactId>rmi</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -17,12 +17,12 @@
     </properties>
 
     <modules>
-        <module>rpc-protocol</module>
-        <module>rpc-client</module>
-        <module>rpc-server</module>
-        <module>rpc-service</module>
-        <module>rpc-demo</module>
-        <module>rpc-e2e-test</module>
+        <module>rmi-protocol</module>
+        <module>rmi-client</module>
+        <module>rmi-server</module>
+        <module>rmi-service</module>
+        <module>rmi-demo</module>
+        <module>rmi-e2e-test</module>
 
     </modules>
 
@@ -43,29 +43,29 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.gmail.vip.alexd.rpc</groupId>
-                <artifactId>rpc-protocol</artifactId>
+                <groupId>com.bitbucket.inbacks.rmi</groupId>
+                <artifactId>rmi-protocol</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.gmail.vip.alexd.rpc</groupId>
-                <artifactId>rpc-server</artifactId>
+                <groupId>com.bitbucket.inbacks.rmi</groupId>
+                <artifactId>rmi-server</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
-                <groupId>com.gmail.vip.alexd.rpc</groupId>
-                <artifactId>rpc-client</artifactId>
+                <groupId>com.bitbucket.inbacks.rmi</groupId>
+                <artifactId>rmi-client</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.gmail.vip.alexd.rpc</groupId>
-                <artifactId>rpc-e2e-test</artifactId>
+                <groupId>com.bitbucket.inbacks.rmi</groupId>
+                <artifactId>rmi-e2e-test</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.gmail.vip.alexd.rpc</groupId>
-                <artifactId>rpc-service</artifactId>
+                <groupId>com.bitbucket.inbacks.rmi</groupId>
+                <artifactId>rmi-service</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
