@@ -2,39 +2,52 @@ package com.bitbucket.inbacks.rmi.protocol;
 
 import java.io.Serializable;
 
+/**
+ * This {@code Response} class represents a special message,
+ * which is sent from the {@code Server} to the {@code Client}.
+ */
 public class Response implements Serializable {
-    private Long id;
-    private Object answer;
-    private String errorSpot;
+    /** Client id field */
+    private final Long id;
+    /** Answer field */
+    private final Object answer;
+    /** Error field */
+    private final String errorSpot;
 
+    /**
+     * Constructs a new {@code Response} from {@code handle}
+     * @param id - client id
+     * @param answer - answer
+     * @param errorSpot - error
+     */
     public Response(Long id, Object answer, String errorSpot) {
         this.id = id;
         this.answer = answer;
         this.errorSpot = errorSpot;
     }
 
+    /**
+     * Returns the value {@link Response#Response#id}
+     * @return id
+     */
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    /**
+     * Returns the value {@link Response#Response#answer}
+     * @return answer
+     */
     public Object getAnswer() {
         return answer;
     }
 
-    public void setAnswer(Object answer) {
-        this.answer = answer;
-    }
-
+    /**
+     * Returns the value {@link Response#Response#errorSpot}
+     * @return error
+     */
     public String getErrorSpot() {
         return errorSpot;
-    }
-
-    public void setErrorSpot(String errorSpot) {
-        this.errorSpot = errorSpot;
     }
 
     @Override
