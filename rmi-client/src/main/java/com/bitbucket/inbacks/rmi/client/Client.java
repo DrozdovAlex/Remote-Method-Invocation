@@ -100,14 +100,15 @@ public class Client {
             }
 
             Response response = (Response) responses.get(id).get();
+            Object answer = response.getAnswer();
 
             switch (response.getErrorSpot()) {
                 case "service":
-                    throw new ServiceNotFoundRuntimeException(response.getAnswer().toString());
+                    throw new ServiceNotFoundRuntimeException(answer.toString());
                 case "method":
-                    throw new MethodNotFoundRuntimeException(response.getAnswer().toString());
+                    throw new MethodNotFoundRuntimeException(answer.toString());
             }
-            return response.getAnswer();
+            return answer;
         } catch (IOException e) {
             logger.warn("Problem while writing object to output stream" , e);
             disconnect();
