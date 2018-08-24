@@ -3,21 +3,21 @@ package com.bitbucket.inbacks.rmi.protocol;
 import java.io.Serializable;
 
 public class Response implements Serializable {
-    private Integer id;
+    private Long id;
     private Object answer;
     private String errorSpot;
 
-    public Response(Integer id, Object answer, String errorSpot) {
+    public Response(Long id, Object answer, String errorSpot) {
         this.id = id;
         this.answer = answer;
         this.errorSpot = errorSpot;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

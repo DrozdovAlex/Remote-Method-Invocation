@@ -4,19 +4,19 @@ package com.bitbucket.inbacks.rmi.protocol;
 import java.io.Serializable;
 
 public class Request implements Serializable{
-    private final Integer id;
+    private final Long id;
     private final String service;
     private final String method;
     private final Object[] parameters;
 
-    public Request(Integer id, String service, String method, Object[] parameters) {
+    public Request(Long id, String service, String method, Object[] parameters) {
         this.id = id;
         this.service = service;
         this.method = method;
         this.parameters = parameters;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

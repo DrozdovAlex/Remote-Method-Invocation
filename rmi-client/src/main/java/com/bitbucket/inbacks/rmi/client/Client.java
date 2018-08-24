@@ -14,20 +14,20 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Client {
-    private final static int BOUND_FOR_ID_GENERATION = 10000000;
     private final String HOST;
     private final int PORT;
 
     private Socket socket;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
-    private Map<Integer,CompletableFuture<Object>> responses;
+    private Map<Long,CompletableFuture<Object>> responses;
+    private AtomicLong atomicLong = new AtomicLong();
 
     private Logger logger = LogManager.getLogger(Client.class.getName());
 
@@ -87,8 +87,7 @@ public class Client {
     }
 
     public Object remoteCall(String service, String method,  Object[] params) {
-        int id = new Random().nextInt(BOUND_FOR_ID_GENERATION);
-
+        Long id = atomicLong.getAndIncrement();
         try {
             Request request = new Request(id, service, method, params);
 
