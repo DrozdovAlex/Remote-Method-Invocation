@@ -86,11 +86,11 @@ public class Client {
         }
     }
 
-    public Object remoteCall(String service, String method,  Object[] params) {
+    public Object remoteCall(String service, String method,  Object[] parameters) {
         int id = new Random().nextInt(BOUND_FOR_ID_GENERATION);
 
         try {
-            Request request = new Request(id, service, method, params);
+            Request request = new Request(id, service, method, parameters);
 
             logger.info("Your request : {}", request);
 
