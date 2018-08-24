@@ -29,6 +29,8 @@ public class MainDemo {
                 c.remoteCall("Service", "sleep", new Object[] {new Long(1000)});
                 logger.info("Current Date is: " + c.remoteCall( "Service",
                         "getCurrentDate", new Object[]{}));
+                logger.info("Mail is: " + c.remoteCall( "Service",
+                        "getMail", new Object[]{}));
             }
         }
     }

@@ -21,7 +21,7 @@ public class Answerer {
     public Object getAnswer() throws  MethodNotFoundException, ServiceNotFoundException {
         try {
             if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
-                System.out.println(getServiceMethod().invoke(getServiceClass().newInstance(), parameters));
+                getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
                 return "Return type of this method is void";
             }
             return getServiceMethod().invoke(getServiceClass().newInstance(), parameters);

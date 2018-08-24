@@ -108,7 +108,7 @@ public class Client {
                 case "method":
                     throw new MethodNotFoundRuntimeException(response.getAnswer().toString());
             }
-            return response;
+            return response.getAnswer();
         } catch (IOException e) {
             logger.warn("Problem while writing object to output stream" , e);
             disconnect();
