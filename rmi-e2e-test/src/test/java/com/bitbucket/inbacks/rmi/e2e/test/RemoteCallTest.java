@@ -46,15 +46,14 @@ public class RemoteCallTest {
     @Test
     public void shouldReturnMailWhenInvokeGetMailMethod() {
         assertEquals(MAIL,
-                ((Response) client.remoteCall(SERVICE_NAME, GET_MAIL_METHOD, new Object[]{}))
-                        .getAnswer());
+                (client.remoteCall(SERVICE_NAME, GET_MAIL_METHOD, new Object[]{})));
     }
 
     @Test
     public void shouldReturnCompositionWhenInvokeMultiplicationMethod() {
         assertEquals(EXPECTED_RESULT,
-                ((Response) client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD,
-                        new Object[]{FIRST_MULTIPLIER,SECOND_MULTIPLIER})).getAnswer());
+                (client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD,
+                        new Object[]{FIRST_MULTIPLIER,SECOND_MULTIPLIER})));
     }
 
     @Test
