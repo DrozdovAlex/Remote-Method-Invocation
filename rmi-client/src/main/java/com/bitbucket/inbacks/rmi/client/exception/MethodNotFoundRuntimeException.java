@@ -9,7 +9,7 @@ package com.bitbucket.inbacks.rmi.client.exception;
  * <li>{@code parameters} has illegal type</>.
  * </ul>
  *
- * @see com.bitbucket.inbacks.rmi.client.Client#remoteCall
+ * @see     com.bitbucket.inbacks.rmi.client.Client#remoteCall
  */
 public class MethodNotFoundRuntimeException extends RuntimeException {
     /**

@@ -5,7 +5,7 @@ package com.bitbucket.inbacks.rmi.client.exception;
  * of method {@code remoteCall} in class {@code Client}
  * if {@code service} has illegal name.
  *
- * @see com.bitbucket.inbacks.rmi.client.Client#remoteCall
+ * @see     com.bitbucket.inbacks.rmi.client.Client#remoteCall
  */
 public class ServiceNotFoundRuntimeException extends RuntimeException {
     /**
