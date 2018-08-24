@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class Response implements Serializable {
     private Integer id;
     private Object answer;
+    private String errorSpot;
 
-    public Response(Integer id, Object answer) {
+    public Response(Integer id, Object answer, String errorSpot) {
         this.id = id;
         this.answer = answer;
+        this.errorSpot = errorSpot;
     }
 
     public Integer getId() {
@@ -25,6 +27,14 @@ public class Response implements Serializable {
 
     public void setAnswer(Object answer) {
         this.answer = answer;
+    }
+
+    public String getErrorSpot() {
+        return errorSpot;
+    }
+
+    public void setErrorSpot(String errorSpot) {
+        this.errorSpot = errorSpot;
     }
 
     @Override
