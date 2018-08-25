@@ -4,9 +4,9 @@ package com.bitbucket.inbacks.rmi.server.exception;
  * Thrown when an instance of class {@code Answerer} tries to invoke
  * {@code getAnswer} method while:
  * <ul>
- * <li>{@code method} field in {@code Answerer} has illegal name</></>.
- * <li>{@code parameters} field has illegal length</>.
- * <li>{@code parameters} field has illegal type</>.
+ * <li>{@code method} field in {@code Answerer} has illegal name</li>
+ * <li>{@code parameters} field has illegal length</li>
+ * <li>{@code parameters} field has illegal type</li>
  * </ul>
  *
  * @see     com.bitbucket.inbacks.rmi.server.Answerer#getAnswer

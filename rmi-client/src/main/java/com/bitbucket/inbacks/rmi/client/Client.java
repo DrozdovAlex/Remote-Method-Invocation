@@ -59,7 +59,7 @@ public class Client {
      * @param host the initial value of the host
      * @param port the initial value of the port
      *
-     * @see     java.util.concurrent.ConcurrentHashMap;
+     * @see     java.util.concurrent.ConcurrentHashMap
      */
     public Client(String host, int port) {
         this.host = host;
@@ -140,7 +140,7 @@ public class Client {
 
     /**
      * Returns {@code method} invocation result with specified
-     * {@params}, which is contained in {@code service}.
+     * {@code params}, which is contained in {@code service}.
      *
      * @param service remote service name
      * @param method method name in {@code service}
@@ -151,7 +151,7 @@ public class Client {
      *             aceess to {@code service} is denied.
      * @exception  MethodNotFoundRuntimeException if there is no method with
      *             such name {@code method} or length of {@code params} is
-     *             illegal or types of {@params} are illegal.
+     *             illegal or types of {@code params} are illegal.
      * @exception  FailedConnectionRuntimeException if there are problems with
      *             connection.
      */

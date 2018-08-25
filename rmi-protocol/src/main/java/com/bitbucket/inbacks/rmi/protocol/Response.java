@@ -27,7 +27,7 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#Response#id}
+     * Returns the value {@link Response#id}
      * @return id
      */
     public Long getId() {
@@ -35,7 +35,7 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#Response#answer}
+     * Returns the value {@link Response#answer}
      * @return answer
      */
     public Object getAnswer() {
@@ -43,7 +43,7 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#Response#errorSpot}
+     * Returns the value {@link Response#errorSpot}
      * @return error
      */
     public String getErrorSpot() {

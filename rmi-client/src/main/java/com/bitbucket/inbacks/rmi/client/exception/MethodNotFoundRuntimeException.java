@@ -4,9 +4,9 @@ package com.bitbucket.inbacks.rmi.client.exception;
  * Thrown when an application tries to obtain the result
  * of method {@code remoteCall} in class {@code Client} if:
  * <ul>
- * <li>{@code method} has illegal name</></>.
- * <li>{@code parameters} has illegal length</>.
- * <li>{@code parameters} has illegal type</>.
+ * <li>{@code method} has illegal name</li>
+ * <li>{@code parameters} has illegal length</li>
+ * <li>{@code parameters} has illegal type</li>
  * </ul>
  *
  * @see     com.bitbucket.inbacks.rmi.client.Client#remoteCall

@@ -34,7 +34,7 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#Request#id}
+     * Returns the value {@link Request#id}
      * @return client id
      */
     public Long getId() {
@@ -42,7 +42,7 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#Request#service}
+     * Returns the value {@link Request#service}
      * @return service name
      */
     public String getService() {
@@ -50,7 +50,7 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#Request#method}
+     * Returns the value {@link Request#method}
      * @return method
      */
     public String getMethod() {
@@ -58,7 +58,7 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#Request#parameters}
+     * Returns the value {@link Request#parameters}
      * @return parameters
      */
     public Object[] getParameters() {
