@@ -9,18 +9,27 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The {@code ClientHandler} class represents
+ * a request handler from the {@code Client}.
+ */
 class ClientHandler {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
     private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
     private ExecutorService pool = Executors.newCachedThreadPool();
 
+    /**
+     * Creates a thread pool for processing requests from the {@code Client}.
+     *
+     * @param clientSocket client socket
+     * @param properties properties from property file
+     */
     public void handle(Socket clientSocket, Properties properties) {
         setStreams(clientSocket);
 
@@ -51,6 +60,11 @@ class ClientHandler {
         }
     }
 
+    /**
+     * Closes {@code Socket} connection, interrupts {@code Thread}.
+     *
+     * @param socket socket
+     */
     private void completeHandle(Socket socket) {
         try {
             socket.close();
@@ -60,11 +74,24 @@ class ClientHandler {
         }
     }
 
+    /**
+     * Causes {@link ClientHandler#setObjectOutputStream(Socket)}
+     * and {@link ClientHandler#setObjectInputStream(Socket)}.
+     *
+     * @param socket socket
+     */
     private void setStreams(Socket socket) {
         setObjectOutputStream(socket);
         setObjectInputStream(socket);
     }
 
+    /**
+     * Initialises objectOutputStream by {@code ObjectOutputStream} object.
+     *
+     * @param clientSocket client socket
+     *
+     * @see     java.io.ObjectOutputStream
+     */
     private void setObjectOutputStream(Socket clientSocket) {
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -74,6 +101,13 @@ class ClientHandler {
         }
     }
 
+    /**
+     * Initialises objectInputStream by {@code ObjectInputStream} object.
+     *
+     * @param clientSocket client socket
+     *
+     * @see     java.io.ObjectInputStream
+     */
     private void setObjectInputStream(Socket clientSocket) {
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -83,12 +117,27 @@ class ClientHandler {
         }
     }
 
+    /**
+     * Returns request from {@code Client}.
+     *
+     * @return request
+     *
+     * @throws IOException  thrown when there has been an Input/Output error
+     * @throws ClassNotFoundException is an exception that occurs when you try
+     * to load a class at run time and mentioned classes are not found in the classpath.
+     */
     private Request readRequest() throws IOException, ClassNotFoundException {
         Request request = (Request) objectInputStream.readObject();
         logger.info("Request from client : {}", request);
         return request;
     }
 
+    /**
+     * Sends a response from {@code Server} to the {@code Client}.
+     *
+     * @param socket socket
+     * @param response response
+     */
     private void writeResponse(Socket socket, Response response) {
         try {
             synchronized (objectInputStream) {
