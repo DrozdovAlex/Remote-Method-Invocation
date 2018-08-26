@@ -3,24 +3,46 @@ package com.bitbucket.inbacks.rmi.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
+/**
+ * The {@code Server} class represents a server,
+ * that runs in multithreaded mode and waits for client requests.
+ */
 public class Server {
+    /** Cache the property file name */
     private final String PROPERTY_FILE_NAME = "/server.properties";
 
+    /** Cache the host name */
     private ServerSocket serverSocket;
+
+    /** The properties is used to load properties from property file */
     private Properties properties;
 
+    /** Logger */
     private Logger logger = LogManager.getLogger(Server.class.getName());
 
+    /**
+     * Initializes a newly created {@code Server} object
+     * with specified port and causes methods {@link Server#loadProperties()}
+     * and {@link Server#setServerSocket(int)}.
+     *
+     * @param PORT the initial value of the port
+     */
     public Server(int PORT) {
         loadProperties();
         setServerSocket(PORT);
     }
 
+    /**
+     * Initialises properties with {@code Properties}.
+     * Load properties from property file.
+     *
+     * @see     java.util.Properties
+     */
     private void loadProperties() {
         properties = new Properties();
         try {
@@ -30,6 +52,13 @@ public class Server {
         }
     }
 
+    /**
+     * Initialises server socket by {@code ServerSocket} object.
+     *
+     * @param PORT the initial value of the port
+     *
+     * @see     java.net.ServerSocket
+     */
     private void setServerSocket(int PORT) {
         try {
             serverSocket = new ServerSocket(PORT);
@@ -38,6 +67,10 @@ public class Server {
         }
     }
 
+    /**
+     * Creates a new {@code Thread}, responsible for accepting clients,
+     * and causes method {@link Server#startClientHandler(Socket)}.
+     */
     public void run() {
         new Thread(() -> {
             while (!Thread.interrupted() || !serverSocket.isClosed()) {
@@ -52,12 +85,22 @@ public class Server {
         }).start();
     }
 
+    /**
+     * Creates a new {@code Thread}, responsible for
+     * creating {@link ClientHandler#handle(Socket, Properties)} object
+     * with {@code Socket} connection and {@code Properties} file.
+     *
+     * @param socket client socket
+     */
     private void startClientHandler(Socket socket) {
         new Thread(() -> {
             new ClientHandler().handle(socket, properties);
         }).start();
     }
 
+    /**
+     * Disconnect {@code Server} by closing {@code ServerSocket}
+     */
     public void disconnect() {
         try {
             serverSocket.close();
