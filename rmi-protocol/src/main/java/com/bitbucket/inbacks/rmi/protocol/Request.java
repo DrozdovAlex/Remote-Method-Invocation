@@ -7,7 +7,6 @@ import java.io.Serializable;
  * which is sent from the {@code Client} to the {@code Server}.
  */
 public class Request implements Serializable{
-
     /** Client id field */
     private final Long id;
     /** Service name field */
@@ -20,7 +19,8 @@ public class Request implements Serializable{
     private final Object[] parameters;
 
     /**
-     * Constructs a new {@code Request} from {@code remoteCall}
+     * Constructs a new {@code Request} from {@code remoteCall}.
+     *
      * @param id - client id
      * @param service - service name
      * @param method - method name
@@ -34,7 +34,8 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#id}
+     * Returns the value {@link Request#id}.
+     *
      * @return client id
      */
     public Long getId() {
@@ -42,7 +43,8 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#service}
+     * Returns the value {@link Request#service}.
+     *
      * @return service name
      */
     public String getService() {
@@ -50,7 +52,8 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#method}
+     * Returns the value {@link Request#method}.
+     *
      * @return method
      */
     public String getMethod() {
@@ -58,7 +61,8 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns the value {@link Request#parameters}
+     * Returns the value {@link Request#parameters}.
+     *
      * @return parameters
      */
     public Object[] getParameters() {
@@ -71,7 +75,9 @@ public class Request implements Serializable{
     }
 
     /**
-     * Returns string of parameters
+     * Returns string of parameters.
+     *
+     * @param parameters specified parameters of the {@code method}
      * @return string of parameters
      */
     private String getStringOfParameters(Object[] parameters) {

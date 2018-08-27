@@ -9,13 +9,16 @@ import java.io.Serializable;
 public class Response implements Serializable {
     /** Client id field */
     private final Long id;
+
     /** Answer field */
     private final Object answer;
+
     /** Error field */
     private final String errorSpot;
 
     /**
-     * Constructs a new {@code Response} from {@code handle}
+     * Constructs a new {@code Response} from {@code handle}.
+     *
      * @param id - client id
      * @param answer - answer
      * @param errorSpot - error
@@ -27,7 +30,8 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#id}
+     * Returns the value {@link Response#id}.
+     *
      * @return id
      */
     public Long getId() {
@@ -35,7 +39,8 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#answer}
+     * Returns the value {@link Response#answer}.
+     *
      * @return answer
      */
     public Object getAnswer() {
@@ -43,13 +48,20 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#errorSpot}
+     * Returns the value {@link Response#errorSpot}.
+     *
      * @return error
      */
     public String getErrorSpot() {
         return errorSpot;
     }
 
+    /**
+     * Returns {@code String} object with {@code id} and
+     * {@code answer} of the response.
+     *
+     * @return {@code String} representation of {@code Response}
+     */
     @Override
     public String toString() {
         return id + " " + answer;
