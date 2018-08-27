@@ -1,5 +1,7 @@
 package com.bitbucket.inbacks.rmi.protocol;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
 /**
@@ -8,14 +10,19 @@ import java.io.Serializable;
  */
 public class Request implements Serializable{
     /** Client id field */
+    @Getter
     private final Long id;
+
     /** Service name field */
+    @Getter
     private final String service;
 
     /** Method name field */
+    @Getter
     private final String method;
 
     /** Parameters field */
+    @Getter
     private final Object[] parameters;
 
     /**
@@ -31,42 +38,6 @@ public class Request implements Serializable{
         this.service = service;
         this.method = method;
         this.parameters = parameters;
-    }
-
-    /**
-     * Returns the value {@link Request#id}.
-     *
-     * @return client id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Returns the value {@link Request#service}.
-     *
-     * @return service name
-     */
-    public String getService() {
-        return service;
-    }
-
-    /**
-     * Returns the value {@link Request#method}.
-     *
-     * @return method
-     */
-    public String getMethod() {
-        return method;
-    }
-
-    /**
-     * Returns the value {@link Request#parameters}.
-     *
-     * @return parameters
-     */
-    public Object[] getParameters() {
-        return parameters;
     }
 
     @Override

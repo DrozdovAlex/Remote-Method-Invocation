@@ -3,7 +3,6 @@ package com.bitbucket.inbacks.rmi.e2e.test;
 import com.bitbucket.inbacks.rmi.client.Client;
 import com.bitbucket.inbacks.rmi.client.exception.MethodNotFoundRuntimeException;
 import com.bitbucket.inbacks.rmi.client.exception.ServiceNotFoundRuntimeException;
-import com.bitbucket.inbacks.rmi.protocol.Response;
 import com.bitbucket.inbacks.rmi.server.Server;
 import org.junit.After;
 import org.junit.Before;
