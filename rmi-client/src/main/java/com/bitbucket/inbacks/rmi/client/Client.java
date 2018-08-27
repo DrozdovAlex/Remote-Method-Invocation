@@ -5,8 +5,7 @@ import com.bitbucket.inbacks.rmi.client.exception.MethodNotFoundRuntimeException
 import com.bitbucket.inbacks.rmi.client.exception.ServiceNotFoundRuntimeException;
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,6 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * The {@code Client} class represents implementation of
  * client interface for calling methods from remote service.
  */
+@Log4j2
 public class Client {
     /** Cache the host name */
     private final String host;
@@ -47,9 +47,6 @@ public class Client {
     /** The atomicLong provides unique id
      * for every request inside session*/
     private AtomicLong atomicLong = new AtomicLong();
-
-    /** Logger */
-    private Logger logger = LogManager.getLogger(Client.class.getName());
 
     /**
      * Initializes a newly created {@code Client} object
@@ -86,10 +83,10 @@ public class Client {
                     response = (Response) objectInputStream.readObject();
                     responses.get(response.getId()).complete(response);
                 } catch (SocketException e) {
-                    logger.warn("Socket is already closed");
+                    log.warn("Socket is already closed");
                     break;
                 } catch (IOException | ClassNotFoundException e) {
-                    logger.error("Problem while reading object from input stream");
+                    log.error("Problem while reading object from input stream");
                     break;
                 }
             }
@@ -102,11 +99,11 @@ public class Client {
      * @see     java.net.Socket
      */
     private void setSocket() {
-        logger.info(host + " " + port);
+        log.info(host + " " + port);
         try {
             socket = new Socket(host, port);
         } catch(IOException e) {
-            logger.error("Problem while opening client socket");
+            log.error("Problem while opening client socket");
         }
     }
 
@@ -119,7 +116,7 @@ public class Client {
         try {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            logger.warn("Problem with opening of output stream", e);
+            log.warn("Problem with opening of output stream", e);
             disconnect();
         }
     }
@@ -133,7 +130,7 @@ public class Client {
         try {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            logger.warn("Problem with opening of input stream", e);
+            log.warn("Problem with opening of input stream", e);
             disconnect();
         }
     }
@@ -161,7 +158,7 @@ public class Client {
         try {
             Request request = new Request(id, service, method, params);
 
-            logger.info("Your request : {}", request);
+            log.info("Your request : {}", request);
 
             responses.put(id, new CompletableFuture<>());
             synchronized (objectOutputStream) {
@@ -180,11 +177,11 @@ public class Client {
             }
             return answer;
         } catch (IOException e) {
-            logger.warn("Problem while writing object to output stream" , e);
+            log.warn("Problem while writing object to output stream" , e);
             disconnect();
             throw new FailedConnectionRuntimeException("Problem with connection");
         } catch (InterruptedException | ExecutionException e) {
-            logger.warn("Problem with extracting response from the map" , e);
+            log.warn("Problem with extracting response from the map" , e);
             disconnect();
             throw new FailedConnectionRuntimeException("Problem with connection");
         } finally {
@@ -201,7 +198,7 @@ public class Client {
                 socket.close();
             }
         } catch (IOException e) {
-            logger.error("Problem while client disconnect", e);
+            log.error("Problem while client disconnect", e);
         }
     }
 }

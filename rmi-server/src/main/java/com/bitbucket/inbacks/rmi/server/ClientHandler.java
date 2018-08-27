@@ -4,8 +4,8 @@ import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
 import com.bitbucket.inbacks.rmi.server.exception.MethodNotFoundException;
 import com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
  * The {@code ClientHandler} class represents
  * a request handler from the {@code Client}.
  */
+@Log4j2
 class ClientHandler {
     /** The objectOutputString is used to send
      * response to the client */
@@ -30,9 +31,6 @@ class ClientHandler {
     /** Pool is used to create pool for threads
      * which creates threads when it is necessary */
     private ExecutorService pool = Executors.newCachedThreadPool();
-
-    /** Logger */
-    private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
 
     /**
      * Creates a thread pool for processing requests from the {@code Client}.
@@ -63,7 +61,7 @@ class ClientHandler {
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
-                logger.warn("Problem while reading object from input stream");
+                log.warn("Problem while reading object from input stream");
                 completeHandle(clientSocket);
                 break;
             }
@@ -80,7 +78,7 @@ class ClientHandler {
             socket.close();
             Thread.interrupted();
         } catch (IOException e) {
-            logger.error("Completing work with client failed", e);
+            log.error("Completing work with client failed", e);
         }
     }
 
@@ -106,7 +104,7 @@ class ClientHandler {
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
-            logger.error("Problem while getting output stream from the client socket", e);
+            log.error("Problem while getting output stream from the client socket", e);
             completeHandle(clientSocket);
         }
     }
@@ -122,7 +120,7 @@ class ClientHandler {
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
-            logger.error("Problem while getting input stream from the client socket", e);
+            log.error("Problem while getting input stream from the client socket", e);
             completeHandle(clientSocket);
         }
     }
@@ -138,7 +136,7 @@ class ClientHandler {
      */
     private Request readRequest() throws IOException, ClassNotFoundException {
         Request request = (Request) objectInputStream.readObject();
-        logger.info("Request from client : {}", request);
+        log.info("Request from client : {}", request);
         return request;
     }
 
@@ -155,7 +153,7 @@ class ClientHandler {
                 objectOutputStream.flush();
             }
         } catch (IOException e) {
-            logger.error("Problem while write response to the output stream", e);
+            log.error("Problem while write response to the output stream", e);
             completeHandle(socket);
         }
     }

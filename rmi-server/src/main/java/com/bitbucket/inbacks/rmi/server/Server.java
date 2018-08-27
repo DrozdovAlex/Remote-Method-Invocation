@@ -1,7 +1,6 @@
 package com.bitbucket.inbacks.rmi.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -12,6 +11,7 @@ import java.util.Properties;
  * The {@code Server} class represents a server,
  * that runs in multithreaded mode and waits for client requests.
  */
+@Log4j2
 public class Server {
     /** Cache the property file name */
     private final String PROPERTY_FILE_NAME = "/server.properties";
@@ -21,9 +21,6 @@ public class Server {
 
     /** The properties is used to load properties from property file */
     private Properties properties;
-
-    /** Logger */
-    private Logger logger = LogManager.getLogger(Server.class.getName());
 
     /**
      * Initializes a newly created {@code Server} object
@@ -48,7 +45,7 @@ public class Server {
         try {
             properties.load(getClass().getResourceAsStream(PROPERTY_FILE_NAME));
         } catch (IOException e) {
-            logger.warn("Can not extract properties from the {}", PROPERTY_FILE_NAME);
+            log.warn("Can not extract properties from the {}", PROPERTY_FILE_NAME);
         }
     }
 
@@ -63,7 +60,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(PORT);
         } catch (IOException e) {
-            logger.error("Problem while opening client socket");
+            log.error("Problem while opening client socket");
         }
     }
 
@@ -78,7 +75,7 @@ public class Server {
                     Socket clientSocket = serverSocket.accept();
                     startClientHandler(clientSocket);
                 } catch (IOException e) {
-                    logger.warn("Can't get client socket from server socket");
+                    log.warn("Can't get client socket from server socket");
                     break;
                 }
             }
@@ -105,7 +102,7 @@ public class Server {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            logger.error("Problem while server disconnect", e);
+            log.error("Problem while server disconnect", e);
         }
 
     }

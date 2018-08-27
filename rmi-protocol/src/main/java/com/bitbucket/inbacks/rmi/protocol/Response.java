@@ -1,5 +1,7 @@
 package com.bitbucket.inbacks.rmi.protocol;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
 /**
@@ -8,12 +10,15 @@ import java.io.Serializable;
  */
 public class Response implements Serializable {
     /** Client id field */
+    @Getter
     private final Long id;
 
     /** Answer field */
+    @Getter
     private final Object answer;
 
     /** Error field */
+    @Getter
     private final String errorSpot;
 
     /**
@@ -27,33 +32,6 @@ public class Response implements Serializable {
         this.id = id;
         this.answer = answer;
         this.errorSpot = errorSpot;
-    }
-
-    /**
-     * Returns the value {@link Response#id}.
-     *
-     * @return id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Returns the value {@link Response#answer}.
-     *
-     * @return answer
-     */
-    public Object getAnswer() {
-        return answer;
-    }
-
-    /**
-     * Returns the value {@link Response#errorSpot}.
-     *
-     * @return error
-     */
-    public String getErrorSpot() {
-        return errorSpot;
     }
 
     /**
