@@ -13,7 +13,8 @@ package com.bitbucket.inbacks.rmi.client.exception;
  */
 public class MethodNotFoundRuntimeException extends RuntimeException {
     /**
-     * Constructs a {@code MethodNotFoundRuntimeException} with no detail message.
+     * Constructs a {@code MethodNotFoundRuntimeException} with
+     * no detail message.
      */
     public MethodNotFoundRuntimeException() {
         super();

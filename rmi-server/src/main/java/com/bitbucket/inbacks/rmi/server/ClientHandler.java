@@ -19,10 +19,20 @@ import java.util.concurrent.Executors;
  * a request handler from the {@code Client}.
  */
 class ClientHandler {
+    /** The objectOutputString is used to send
+     * response to the client */
     private ObjectOutputStream objectOutputStream;
+
+    /** The objectInputStream is used to obtain
+     * request from the client */
     private ObjectInputStream objectInputStream;
-    private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
+
+    /** Pool is used to create pool for threads
+     * which creates threads when it is necessary */
     private ExecutorService pool = Executors.newCachedThreadPool();
+
+    /** Logger */
+    private Logger logger = LogManager.getLogger(ClientHandler.class.getName());
 
     /**
      * Creates a thread pool for processing requests from the {@code Client}.
