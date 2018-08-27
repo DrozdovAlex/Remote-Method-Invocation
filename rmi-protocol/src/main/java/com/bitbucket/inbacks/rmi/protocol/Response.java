@@ -35,33 +35,6 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#id}.
-     *
-     * @return id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Returns the value {@link Response#answer}.
-     *
-     * @return answer
-     */
-    public Object getAnswer() {
-        return answer;
-    }
-
-    /**
-     * Returns the value {@link Response#error}.
-     *
-     * @return error
-     */
-    public boolean hasError() {
-        return error;
-    }
-
-    /**
      * Returns {@code String} object with {@code id} and
      * {@code answer} of the response.
      *

@@ -171,7 +171,7 @@ public class Client {
             Response response = (Response) responses.get(id).get();
             Object answer = response.getAnswer();
 
-            if (response.hasError()) {
+            if (response.isError()) {
                 throw new AnswerNotFoundRuntimeException(answer.toString());
             }
 
