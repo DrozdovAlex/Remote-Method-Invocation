@@ -15,22 +15,22 @@ package com.bitbucket.inbacks.rmi.client.exception;
  *
  * @see     com.bitbucket.inbacks.rmi.client.Client#remoteCall
  */
-public class AnswerNotFoundRuntimeException extends RuntimeException {
+public class RemoteCallRuntimeException extends RuntimeException {
     /**
-     * Constructs a {@code AnswerNotFoundRuntimeException} with
+     * Constructs a {@code RemoteCallRuntimeException} with
      * no detail message.
      */
-    public AnswerNotFoundRuntimeException() {
+    public RemoteCallRuntimeException() {
         super();
     }
 
     /**
-     * Constructs a {@code AnswerNotFoundRuntimeException} with the
+     * Constructs a {@code RemoteCallRuntimeException} with the
      * specified detail message.
      *
      * @param message the detail message.
      */
-    public AnswerNotFoundRuntimeException(String message) {
+    public RemoteCallRuntimeException(String message) {
         super(message);
     }
 }

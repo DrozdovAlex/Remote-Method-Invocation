@@ -1,6 +1,6 @@
 package com.bitbucket.inbacks.rmi.server;
 
-import com.bitbucket.inbacks.rmi.server.exception.AnswerNotFoundException;
+import com.bitbucket.inbacks.rmi.server.exception.RemoteCallException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,7 +45,7 @@ public class Answerer {
      * {@code String} object with special message.
      *
      * @return result of {@code method} invocation with {@code parameters}
-     * @throws AnswerNotFoundException if:
+     * @throws RemoteCallException if:
      *         <ul>
      *         <li>{@code service} field has illegal name</li>
      *         <li>{@code method} field in {@code Answerer} has illegal name</li>
@@ -53,9 +53,9 @@ public class Answerer {
      *         <li>{@code parameters} field has illegal type</li>
      *         </ul>
      * @see     java.lang.String
-     * @see     com.bitbucket.inbacks.rmi.server.exception.AnswerNotFoundException
+     * @see     RemoteCallException
      */
-    public Object getAnswer() throws AnswerNotFoundException {
+    public Object getAnswer() throws RemoteCallException {
         try {
             if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
                 getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
@@ -63,11 +63,11 @@ public class Answerer {
             }
             return getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
         } catch(InstantiationException e) {
-            throw new AnswerNotFoundException(ErrorCode.SERVICE_ACCESS_IS_DENIED);
+            throw new RemoteCallException(ErrorCode.SERVICE_ACCESS_IS_DENIED);
         } catch (IllegalAccessException e) {
-            throw new AnswerNotFoundException(ErrorCode.METHOD_ACCESS_IS_DENIED);
+            throw new RemoteCallException(ErrorCode.METHOD_ACCESS_IS_DENIED);
         } catch (InvocationTargetException e) {
-            throw new AnswerNotFoundException(ErrorCode.INVOCATION_FAILED);
+            throw new RemoteCallException(ErrorCode.INVOCATION_FAILED);
         }
     }
 
@@ -76,25 +76,25 @@ public class Answerer {
      * the {@code method}.
      *
      * @return {@code Method} corresponds to {@code method}
-     * @throws AnswerNotFoundException  if there is no service with such name or
+     * @throws RemoteCallException  if there is no service with such name or
      *         there is no method in {@code Service} with such signature
      */
-    private Method getServiceMethod() throws AnswerNotFoundException {
+    private Method getServiceMethod() throws RemoteCallException {
         checkMethodWithParameters();
         try {
             return getServiceClass().getDeclaredMethod(method, getParameterTypes());
         } catch (NoSuchMethodException e) {
-            throw new AnswerNotFoundException(ErrorCode.ILLEGAL_TYPE_OF_PARAMETERS);
+            throw new RemoteCallException(ErrorCode.ILLEGAL_TYPE_OF_PARAMETERS);
         }
     }
 
     /**
      * Checks if {@code method} and {@code parameters} are legal.
      *
-     * @throws AnswerNotFoundException if there is no service with such name or
+     * @throws RemoteCallException if there is no service with such name or
      *         there is no method in {@code Service} with such signature
      */
-    private void checkMethodWithParameters() throws AnswerNotFoundException {
+    private void checkMethodWithParameters() throws RemoteCallException {
         Method[] methods = getMethodsWithEqualName();
 
         checkMethodName(methods);
@@ -107,10 +107,10 @@ public class Answerer {
      * of {@code Method} are contained in {@code service}.
      *
      * @return array of {@code Method} with {@code method} name
-     * @throws AnswerNotFoundException if there is no service with such name
+     * @throws RemoteCallException if there is no service with such name
      * @see java.util.ArrayList
      */
-    private Method[] getMethodsWithEqualName() throws AnswerNotFoundException {
+    private Method[] getMethodsWithEqualName() throws RemoteCallException {
         ArrayList<Method> methods = new ArrayList<>();
 
         for (Method m : getMethods()) {
@@ -127,9 +127,9 @@ public class Answerer {
      *
      * @return array of {@code Method} corresponds to the methods from
      *         specified {@code service}
-     * @throws AnswerNotFoundException if there is no service with such name
+     * @throws RemoteCallException if there is no service with such name
      */
-    private Method[] getMethods() throws AnswerNotFoundException {
+    private Method[] getMethods() throws RemoteCallException {
         return getServiceClass().getMethods();
     }
 
@@ -138,13 +138,13 @@ public class Answerer {
      * to the specified {@code service}.
      *
      * @return object of the {@code Class} corresponds to {@code service}
-     * @throws AnswerNotFoundException if there is no service with such name
+     * @throws RemoteCallException if there is no service with such name
      */
-    private Class getServiceClass() throws AnswerNotFoundException {
+    private Class getServiceClass() throws RemoteCallException {
         try {
             return Class.forName(service);
         } catch (ClassNotFoundException | NullPointerException e) {
-            throw new AnswerNotFoundException(ErrorCode.SERVICE_NOT_FOUND);
+            throw new RemoteCallException(ErrorCode.SERVICE_NOT_FOUND);
         }
     }
 
@@ -154,12 +154,12 @@ public class Answerer {
      *
      * @param methods array of {@code Method} (every element corresponds
      *                to the method in {@code service})
-     * @throws AnswerNotFoundException if there is no method in {@code Service}
+     * @throws RemoteCallException if there is no method in {@code Service}
      *         with such name {@code method}
      */
-    private void checkMethodName(Method[] methods) throws AnswerNotFoundException {
+    private void checkMethodName(Method[] methods) throws RemoteCallException {
         if (methods.length == 0) {
-            throw new AnswerNotFoundException(ErrorCode.METHOD_NOT_FOUND);
+            throw new RemoteCallException(ErrorCode.METHOD_NOT_FOUND);
         }
     }
 
@@ -169,14 +169,14 @@ public class Answerer {
      *
      * @param methods array of {@code Method} corresponds to the methods
      *                with name {@code method}
-     * @throws AnswerNotFoundException if there is no method in {@code Service}
+     * @throws RemoteCallException if there is no method in {@code Service}
      *         with such number of parameters as in {@code parameters}
      */
-    private void checkParameters(Method[] methods) throws AnswerNotFoundException {
+    private void checkParameters(Method[] methods) throws RemoteCallException {
         Method[] equalParametersNumberMethods = getEqualParameterNumberMethods(methods);
 
         if (equalParametersNumberMethods.length == 0) {
-            throw new AnswerNotFoundException(ErrorCode.ILLEGAL_NUMBER_OF_PARAMETERS);
+            throw new RemoteCallException(ErrorCode.ILLEGAL_NUMBER_OF_PARAMETERS);
         }
     }
 
