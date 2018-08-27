@@ -1,6 +1,6 @@
 package com.bitbucket.inbacks.rmi.protocol;
 
-import lombok.Getter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -8,6 +8,7 @@ import java.io.Serializable;
  * This {@code Request} class represents a special message,
  * which is sent from the {@code Client} to the {@code Server}.
  */
+@RequiredArgsConstructor
 public class Request implements Serializable {
     /** Client id field */
     @Getter
@@ -24,21 +25,6 @@ public class Request implements Serializable {
     /** Parameters field */
     @Getter
     private final Object[] parameters;
-
-    /**
-     * Constructs a new {@code Request} from {@code remoteCall}.
-     *
-     * @param id - client id
-     * @param service - service name
-     * @param method - method name
-     * @param parameters - parameters
-     */
-    public Request(Long id, String service, String method, Object[] parameters) {
-        this.id = id;
-        this.service = service;
-        this.method = method;
-        this.parameters = parameters;
-    }
 
     @Override
     public String toString() {
