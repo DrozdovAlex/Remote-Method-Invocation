@@ -14,19 +14,19 @@ public class Response implements Serializable {
     private final Object answer;
 
     /** Error field */
-    private final String errorSpot;
+    private final boolean error;
 
     /**
      * Constructs a new {@code Response} from {@code handle}.
      *
      * @param id - client id
      * @param answer - answer
-     * @param errorSpot - error
+     * @param error - error
      */
-    public Response(Long id, Object answer, String errorSpot) {
+    public Response(Long id, Object answer, boolean error) {
         this.id = id;
         this.answer = answer;
-        this.errorSpot = errorSpot;
+        this.error = error;
     }
 
     /**
@@ -48,12 +48,12 @@ public class Response implements Serializable {
     }
 
     /**
-     * Returns the value {@link Response#errorSpot}.
+     * Returns the value {@link Response#error}.
      *
      * @return error
      */
-    public String getErrorSpot() {
-        return errorSpot;
+    public boolean hasError() {
+        return error;
     }
 
     /**

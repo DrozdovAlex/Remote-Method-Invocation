@@ -1,9 +1,7 @@
 package com.bitbucket.inbacks.rmi.e2e.test;
 
 import com.bitbucket.inbacks.rmi.client.Client;
-import com.bitbucket.inbacks.rmi.client.exception.MethodNotFoundRuntimeException;
-import com.bitbucket.inbacks.rmi.client.exception.ServiceNotFoundRuntimeException;
-import com.bitbucket.inbacks.rmi.protocol.Response;
+import com.bitbucket.inbacks.rmi.client.exception.AnswerNotFoundRuntimeException;
 import com.bitbucket.inbacks.rmi.server.Server;
 import org.junit.After;
 import org.junit.Before;
@@ -57,29 +55,29 @@ public class RemoteCallTest {
     }
 
     @Test
-    public void shouldThrowServiceNotFoundRuntimeExceptionWithIllegalServiceNameWhenInvokeWithWrongService() {
-        thrown.expect(ServiceNotFoundRuntimeException.class);
+    public void shouldThrowAnswerNotFoundRuntimeExceptionWithIllegalServiceNameWhenInvokeWithWrongService() {
+        thrown.expect(AnswerNotFoundRuntimeException.class);
         thrown.expectMessage(ILLEGAL_SERVICE_NAME);
         client.remoteCall(WRONG_SERVICE_NAME, GET_MAIL_METHOD, new Object[]{});
     }
 
     @Test
-    public void shouldThrowMethodNotFoundRuntimeExceptionWithIllegalMethodNameWhenInvokeWithWrongMethod() {
-        thrown.expect(MethodNotFoundRuntimeException.class);
+    public void shouldThrowAnswerNotFoundRuntimeExceptionWithIllegalMethodNameWhenInvokeWithWrongMethod() {
+        thrown.expect(AnswerNotFoundRuntimeException.class);
         thrown.expectMessage(ILLEGAL_METHOD_NAME);
         client.remoteCall(SERVICE_NAME, WRONG_METHOD_NAME, new Object[]{});
     }
 
     @Test
-    public void shouldThrowMethodNotFoundRuntimeExceptionWithIllegalNumberOfParametersWhenInvokeWithWrongNumberOfParameters() {
-        thrown.expect(MethodNotFoundRuntimeException.class);
+    public void shouldThrowAnswerNotFoundRuntimeExceptionWithIllegalNumberOfParametersWhenInvokeWithWrongNumberOfParameters() {
+        thrown.expect(AnswerNotFoundRuntimeException.class);
         thrown.expectMessage(ILLEGAL_NUMBER_OF_PARAMETERS);
         client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER});
     }
 
     @Test
-    public void shouldThrowMethodNotFoundRuntimeExceptionWithIllegalTypeOfParametersWhenInvokeWithWrongTypeOfParameters() {
-        thrown.expect(MethodNotFoundRuntimeException.class);
+    public void shouldThrowAnswerNotFoundRuntimeExceptionWithIllegalTypeOfParametersWhenInvokeWithWrongTypeOfParameters() {
+        thrown.expect(AnswerNotFoundRuntimeException.class);
         thrown.expectMessage(ILLEGAL_TYPE_OF_PARAMETERS);
         client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER, MAIL});
     }

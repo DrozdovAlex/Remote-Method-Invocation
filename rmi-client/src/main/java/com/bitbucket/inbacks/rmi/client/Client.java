@@ -1,8 +1,7 @@
 package com.bitbucket.inbacks.rmi.client;
 
+import com.bitbucket.inbacks.rmi.client.exception.AnswerNotFoundRuntimeException;
 import com.bitbucket.inbacks.rmi.client.exception.FailedConnectionRuntimeException;
-import com.bitbucket.inbacks.rmi.client.exception.MethodNotFoundRuntimeException;
-import com.bitbucket.inbacks.rmi.client.exception.ServiceNotFoundRuntimeException;
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
 import org.apache.logging.log4j.LogManager;
@@ -146,12 +145,15 @@ public class Client {
      * @param method method name in {@code service}
      * @param params parameters of the {@code method}
      * @return the object which is the result of the specified {@code method}
-     * @exception  ServiceNotFoundRuntimeException  if the there is no
-     *             remote service with such name {@code service} or a
-     *             aceess to {@code service} is denied.
-     * @exception  MethodNotFoundRuntimeException if there is no method with
-     *             such name {@code method} or length of {@code params} is
-     *             illegal or types of {@code params} are illegal.
+     * @exception  AnswerNotFoundRuntimeException  if:
+     *             <ul>
+     *             <li>There is no remote service with such name {@code service}</li>
+     *             <li>Access to {@code service} is denied</li>
+     *             <li>There is no method with such name {@code method}</li>
+     *             <li>Length of {@code params} is illegal</li>
+     *             <li>Types of {@code params} are illegal</li>
+     *             <li>Access to {@code method} is denied</li>
+     *             </ul>
      * @exception  FailedConnectionRuntimeException if there are problems with
      *             connection.
      */
@@ -172,12 +174,10 @@ public class Client {
             Response response = (Response) responses.get(id).get();
             Object answer = response.getAnswer();
 
-            switch (response.getErrorSpot()) {
-                case "service":
-                    throw new ServiceNotFoundRuntimeException(answer.toString());
-                case "method":
-                    throw new MethodNotFoundRuntimeException(answer.toString());
+            if (response.hasError()) {
+                throw new AnswerNotFoundRuntimeException(answer.toString());
             }
+
             return answer;
         } catch (IOException e) {
             logger.warn("Problem while writing object to output stream" , e);

@@ -1,7 +1,6 @@
 package com.bitbucket.inbacks.rmi.server;
 
-import com.bitbucket.inbacks.rmi.server.exception.MethodNotFoundException;
-import com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException;
+import com.bitbucket.inbacks.rmi.server.exception.AnswerNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -46,15 +45,17 @@ public class Answerer {
      * {@code String} object with special message.
      *
      * @return result of {@code method} invocation with {@code parameters}
-     * @throws ServiceNotFoundException if there is no service with such name
-     *         or there are no rights to access
-     * @throws MethodNotFoundException if there is no method in {@code Service}
-     *         with such signature or there are no rights to access
+     * @throws AnswerNotFoundException if:
+     *         <ul>
+     *         <li>{@code service} field has illegal name</li>
+     *         <li>{@code method} field in {@code Answerer} has illegal name</li>
+     *         <li>{@code parameters} field has illegal length</li>
+     *         <li>{@code parameters} field has illegal type</li>
+     *         </ul>
      * @see     java.lang.String
-     * @see     com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException
-     * @see     com.bitbucket.inbacks.rmi.server.exception.MethodNotFoundException
+     * @see     com.bitbucket.inbacks.rmi.server.exception.AnswerNotFoundException
      */
-    public Object getAnswer() throws ServiceNotFoundException, MethodNotFoundException {
+    public Object getAnswer() throws AnswerNotFoundException {
         try {
             if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
                 getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
@@ -62,11 +63,11 @@ public class Answerer {
             }
             return getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
         } catch(InstantiationException e) {
-            throw new ServiceNotFoundException("Access is denied");
+            throw new AnswerNotFoundException(ErrorCode.SERVICE_ACCESS_IS_DENIED);
         } catch (IllegalAccessException e) {
-            throw new MethodNotFoundException("Access is denied");
+            throw new AnswerNotFoundException(ErrorCode.METHOD_ACCESS_IS_DENIED);
         } catch (InvocationTargetException e) {
-            throw new MethodNotFoundException("Failed when starting");
+            throw new AnswerNotFoundException(ErrorCode.INVOCATION_FAILED);
         }
     }
 
@@ -75,27 +76,25 @@ public class Answerer {
      * the {@code method}.
      *
      * @return {@code Method} corresponds to {@code method}
-     * @throws ServiceNotFoundException if there is no service with such name
-     * @throws MethodNotFoundException if there is no method in {@code Service}
-     *         with such signature
+     * @throws AnswerNotFoundException  if there is no service with such name or
+     *         there is no method in {@code Service} with such signature
      */
-    private Method getServiceMethod() throws ServiceNotFoundException, MethodNotFoundException {
+    private Method getServiceMethod() throws AnswerNotFoundException {
         checkMethodWithParameters();
         try {
             return getServiceClass().getDeclaredMethod(method, getParameterTypes());
         } catch (NoSuchMethodException e) {
-            throw new MethodNotFoundException("Illegal type of parameters");
+            throw new AnswerNotFoundException(ErrorCode.ILLEGAL_TYPE_OF_PARAMETERS);
         }
     }
 
     /**
      * Checks if {@code method} and {@code parameters} are legal.
      *
-     * @throws ServiceNotFoundException if there is no service with such name
-     * @throws MethodNotFoundException if there is no method in {@code Service}
-     *         with such signature
+     * @throws AnswerNotFoundException if there is no service with such name or
+     *         there is no method in {@code Service} with such signature
      */
-    private void checkMethodWithParameters() throws ServiceNotFoundException, MethodNotFoundException {
+    private void checkMethodWithParameters() throws AnswerNotFoundException {
         Method[] methods = getMethodsWithEqualName();
 
         checkMethodName(methods);
@@ -108,10 +107,10 @@ public class Answerer {
      * of {@code Method} are contained in {@code service}.
      *
      * @return array of {@code Method} with {@code method} name
-     * @throws ServiceNotFoundException if there is no service with such name
+     * @throws AnswerNotFoundException if there is no service with such name
      * @see java.util.ArrayList
      */
-    private Method[] getMethodsWithEqualName() throws ServiceNotFoundException {
+    private Method[] getMethodsWithEqualName() throws AnswerNotFoundException {
         ArrayList<Method> methods = new ArrayList<>();
 
         for (Method m : getMethods()) {
@@ -128,9 +127,9 @@ public class Answerer {
      *
      * @return array of {@code Method} corresponds to the methods from
      *         specified {@code service}
-     * @throws ServiceNotFoundException if there is no service with such name
+     * @throws AnswerNotFoundException if there is no service with such name
      */
-    private Method[] getMethods() throws ServiceNotFoundException {
+    private Method[] getMethods() throws AnswerNotFoundException {
         return getServiceClass().getMethods();
     }
 
@@ -139,13 +138,13 @@ public class Answerer {
      * to the specified {@code service}.
      *
      * @return object of the {@code Class} corresponds to {@code service}
-     * @throws ServiceNotFoundException if there is no service with such name
+     * @throws AnswerNotFoundException if there is no service with such name
      */
-    private Class getServiceClass() throws ServiceNotFoundException {
+    private Class getServiceClass() throws AnswerNotFoundException {
         try {
             return Class.forName(service);
         } catch (ClassNotFoundException | NullPointerException e) {
-            throw new ServiceNotFoundException("Illegal service name");
+            throw new AnswerNotFoundException(ErrorCode.SERVICE_NOT_FOUND);
         }
     }
 
@@ -155,12 +154,12 @@ public class Answerer {
      *
      * @param methods array of {@code Method} (every element corresponds
      *                to the method in {@code service})
-     * @throws MethodNotFoundException if there is no method in {@code Service}
+     * @throws AnswerNotFoundException if there is no method in {@code Service}
      *         with such name {@code method}
      */
-    private void checkMethodName(Method[] methods) throws MethodNotFoundException {
+    private void checkMethodName(Method[] methods) throws AnswerNotFoundException {
         if (methods.length == 0) {
-            throw new MethodNotFoundException("Illegal method name");
+            throw new AnswerNotFoundException(ErrorCode.METHOD_NOT_FOUND);
         }
     }
 
@@ -170,14 +169,14 @@ public class Answerer {
      *
      * @param methods array of {@code Method} corresponds to the methods
      *                with name {@code method}
-     * @throws MethodNotFoundException if there is no method in {@code Service}
+     * @throws AnswerNotFoundException if there is no method in {@code Service}
      *         with such number of parameters as in {@code parameters}
      */
-    private void checkParameters(Method[] methods) throws MethodNotFoundException {
+    private void checkParameters(Method[] methods) throws AnswerNotFoundException {
         Method[] equalParametersNumberMethods = getEqualParameterNumberMethods(methods);
 
         if (equalParametersNumberMethods.length == 0) {
-            throw new MethodNotFoundException("Illegal number of parameters");
+            throw new AnswerNotFoundException(ErrorCode.ILLEGAL_NUMBER_OF_PARAMETERS);
         }
     }
 

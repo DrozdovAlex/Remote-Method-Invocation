@@ -2,8 +2,7 @@ package com.bitbucket.inbacks.rmi.server;
 
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
-import com.bitbucket.inbacks.rmi.server.exception.MethodNotFoundException;
-import com.bitbucket.inbacks.rmi.server.exception.ServiceNotFoundException;
+import com.bitbucket.inbacks.rmi.server.exception.AnswerNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
@@ -53,13 +52,10 @@ class ClientHandler {
                                 new Answerer(properties.getProperty(request.getService()),
                                         request.getMethod(),
                                         request.getParameters())
-                                        .getAnswer(), "none"));
-                    } catch (ServiceNotFoundException e) {
+                                        .getAnswer(), false));
+                    } catch (AnswerNotFoundException e) {
                         writeResponse(clientSocket, new Response(request.getId(), e.getMessage(),
-                                "service"));
-                    } catch (MethodNotFoundException e) {
-                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage(),
-                                "method"));
+                                true));
                     }
                 });
             } catch (IOException | ClassNotFoundException e) {
