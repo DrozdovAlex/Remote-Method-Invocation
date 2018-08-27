@@ -8,7 +8,7 @@ import java.io.Serializable;
  * This {@code Request} class represents a special message,
  * which is sent from the {@code Client} to the {@code Server}.
  */
-public class Request implements Serializable{
+public class Request implements Serializable {
     /** Client id field */
     @Getter
     private final Long id;

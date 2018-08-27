@@ -17,21 +17,48 @@ public class Response implements Serializable {
     @Getter
     private final Object answer;
 
-    /** Error field */
+    /** Error flag field */
     @Getter
-    private final String errorSpot;
+    private final boolean error;
 
     /**
      * Constructs a new {@code Response} from {@code handle}.
      *
      * @param id - client id
      * @param answer - answer
-     * @param errorSpot - error
+     * @param error - error
      */
-    public Response(Long id, Object answer, String errorSpot) {
+    public Response(Long id, Object answer, boolean error) {
         this.id = id;
         this.answer = answer;
-        this.errorSpot = errorSpot;
+        this.error = error;
+    }
+
+    /**
+     * Returns the value {@link Response#id}.
+     *
+     * @return id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Returns the value {@link Response#answer}.
+     *
+     * @return answer
+     */
+    public Object getAnswer() {
+        return answer;
+    }
+
+    /**
+     * Returns the value {@link Response#error}.
+     *
+     * @return error
+     */
+    public boolean hasError() {
+        return error;
     }
 
     /**
