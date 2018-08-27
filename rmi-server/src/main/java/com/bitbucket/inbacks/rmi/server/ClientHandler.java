@@ -4,7 +4,7 @@ import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
 
 import lombok.extern.log4j.Log4j2;
-import com.bitbucket.inbacks.rmi.server.exception.AnswerNotFoundException;
+import com.bitbucket.inbacks.rmi.server.exception.RemoteCallException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -51,7 +51,7 @@ class ClientHandler {
                                         request.getMethod(),
                                         request.getParameters())
                                         .getAnswer(), false));
-                    } catch (AnswerNotFoundException e) {
+                    } catch (RemoteCallException e) {
                         writeResponse(clientSocket, new Response(request.getId(), e.getMessage(),
                                 true));
                     }

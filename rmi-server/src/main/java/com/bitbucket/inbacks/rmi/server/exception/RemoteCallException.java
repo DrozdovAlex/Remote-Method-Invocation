@@ -23,21 +23,21 @@ import java.io.IOException;
  * @see     com.bitbucket.inbacks.rmi.server.Answerer#checkMethodName
  * @see     com.bitbucket.inbacks.rmi.server.Answerer#checkParameters
  */
-public class AnswerNotFoundException extends IOException {
+public class RemoteCallException extends IOException {
     /**
-     * Constructs a {@code AnswerNotFoundException} with no detail message.
+     * Constructs a {@code RemoteCallException} with no detail message.
      */
-    public AnswerNotFoundException() {
+    public RemoteCallException() {
         super();
     }
 
     /**
-     * Constructs a {@code AnswerNotFoundException} corresponds
+     * Constructs a {@code RemoteCallException} corresponds
      * to the special error code from {@code ErrorCode}
      *
      * @param code code of error from {@code ErrorCode}
      */
-    public AnswerNotFoundException(ErrorCode code) {
+    public RemoteCallException(ErrorCode code) {
         super(code.get());
     }
 }

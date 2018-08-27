@@ -1,6 +1,6 @@
 package com.bitbucket.inbacks.rmi.client;
 
-import com.bitbucket.inbacks.rmi.client.exception.AnswerNotFoundRuntimeException;
+import com.bitbucket.inbacks.rmi.client.exception.RemoteCallRuntimeException;
 import com.bitbucket.inbacks.rmi.client.exception.FailedConnectionRuntimeException;
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
@@ -142,7 +142,7 @@ public class Client {
      * @param method method name in {@code service}
      * @param params parameters of the {@code method}
      * @return the object which is the result of the specified {@code method}
-     * @exception  AnswerNotFoundRuntimeException  if:
+     * @exception RemoteCallRuntimeException  if:
      *             <ul>
      *             <li>There is no remote service with such name {@code service}</li>
      *             <li>Access to {@code service} is denied</li>
@@ -172,7 +172,7 @@ public class Client {
             Object answer = response.getAnswer();
 
             if (response.isError()) {
-                throw new AnswerNotFoundRuntimeException(answer.toString());
+                throw new RemoteCallRuntimeException(answer.toString());
             }
 
             return answer;
