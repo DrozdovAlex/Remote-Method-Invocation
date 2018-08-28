@@ -43,9 +43,9 @@ public class Client {
     /** The responses is used to cache responses from server */
     private Map<Long,CompletableFuture<Object>> responses;
 
-    /** The atomicLong provides unique id
+    /** The counter provides unique id
      * for every request inside session*/
-    private AtomicLong atomicLong = new AtomicLong();
+    private AtomicLong counter = new AtomicLong(0L);
 
     /**
      * Initializes a newly created {@code Client} object
@@ -155,7 +155,7 @@ public class Client {
      *             connection.
      */
     public Object remoteCall(String service, String method,  Object[] params) {
-        Long id = atomicLong.getAndIncrement();
+        Long id = counter.getAndIncrement();
 
         try {
             Request request = new Request(id, service, method, params);
