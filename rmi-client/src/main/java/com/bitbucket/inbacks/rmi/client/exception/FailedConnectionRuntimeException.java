@@ -10,19 +10,13 @@ package com.bitbucket.inbacks.rmi.client.exception;
  */
 public class FailedConnectionRuntimeException extends RuntimeException {
     /**
-     * Constructs a {@code FailedConnectionRuntimeException} with no detail message.
-     */
-    public FailedConnectionRuntimeException() {
-        super();
-    }
-
-    /**
      * Constructs a {@code FailedConnectionRuntimeException} with the
      * specified detail message.
      *
      * @param message the detail message.
+     * @param  cause the cause (which is saved for later retrieval)
      */
-    public FailedConnectionRuntimeException(String message) {
-        super(message);
+    public FailedConnectionRuntimeException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
