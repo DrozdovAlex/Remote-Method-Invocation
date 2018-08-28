@@ -179,11 +179,11 @@ public class Client {
         } catch (IOException e) {
             log.warn("Problem while writing object to output stream" , e);
             disconnect();
-            throw new FailedConnectionRuntimeException("Problem with connection");
+            throw new FailedConnectionRuntimeException("Problem with connection", e);
         } catch (InterruptedException | ExecutionException e) {
             log.warn("Problem with extracting response from the map" , e);
             disconnect();
-            throw new FailedConnectionRuntimeException("Problem with connection");
+            throw new FailedConnectionRuntimeException("Problem with connection", e);
         } finally {
             responses.remove(id);
         }
