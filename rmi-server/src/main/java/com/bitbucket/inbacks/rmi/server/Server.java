@@ -13,13 +13,13 @@ import java.util.Properties;
  */
 @Log4j2
 public class Server {
-    /** Cache the property file name */
+    /** Property file name */
     private final String PROPERTY_FILE_NAME = "/server.properties";
 
-    /** Cache the host name */
+    /** ServerSocket field */
     private ServerSocket serverSocket;
 
-    /** The properties is used to load properties from property file */
+    /** Used to load properties from property file */
     private Properties properties;
 
     /**
@@ -27,7 +27,7 @@ public class Server {
      * with specified port and causes methods {@link Server#loadProperties()}
      * and {@link Server#setServerSocket(int)}.
      *
-     * @param PORT the initial value of the port
+     * @param PORT value of the port
      */
     public Server(int PORT) {
         loadProperties();
@@ -37,8 +37,6 @@ public class Server {
     /**
      * Initialises properties with {@code Properties}.
      * Load properties from property file.
-     *
-     * @see     java.util.Properties
      */
     private void loadProperties() {
         properties = new Properties();
@@ -52,9 +50,7 @@ public class Server {
     /**
      * Initialises server socket by {@code ServerSocket} object.
      *
-     * @param PORT the initial value of the port
-     *
-     * @see     java.net.ServerSocket
+     * @param PORT value of the port
      */
     private void setServerSocket(int PORT) {
         try {

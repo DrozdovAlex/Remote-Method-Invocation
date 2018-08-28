@@ -23,39 +23,32 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Log4j2
 public class Client {
-    /** Cache the host name */
+    /** Server host name */
     private final String host;
 
-    /** Cache the port number */
+    /** Server port number */
     private final int port;
 
-    /** Cache the socket */
+    /** Socket field */
     private Socket socket;
 
-    /** The objectInputStream is used to obtain
-     * response from the server */
+    /** Used to obtain response from the server */
     private ObjectInputStream objectInputStream;
 
-    /** The objectOutputString is used to send
-     * request to the server */
+    /** Used to send request to the server */
     private ObjectOutputStream objectOutputStream;
 
-    /** The responses is used to cache responses from server */
+    /** Used to cache responses from server */
     private Map<Long, CompletableFuture<Object>> responses;
 
-    /** The counter provides unique id
-     * for every request inside session*/
+    /** Provides unique id */
     private AtomicLong counter = new AtomicLong(0L);
 
     /**
-     * Initializes a newly created {@code Client} object
-     * with specified host and port. It also initialises
-     * responses with {@code ConcurrentHashMap}.
+     * Initializes the client. No connection established.
      *
-     * @param host the initial value of the host
-     * @param port the initial value of the port
-     *
-     * @see     java.util.concurrent.ConcurrentHashMap
+     * @param host value of the host
+     * @param port value of the port
      */
     public Client(String host, int port) {
         this.host = host;
@@ -64,16 +57,13 @@ public class Client {
     }
 
     /**
-     * Prepares client to send requests to the server,
-     * in other words it initialises client socket,
-     * streams and start {@code Thread} to process of server response.
-     *
-     * @see     java.lang.Thread
+     * Initialises client socket, streams and starts 
+     * processing of server responses.
      */
     public void run() {
-        setSocket();
-        setObjectOutputStream();
-        setObjectInputStream();
+        initialSocket();
+        initialObjectOutputStream();
+        initialObjectInputStream();
 
         new Thread(() -> {
             while (!socket.isClosed()) {
@@ -96,10 +86,8 @@ public class Client {
 
     /**
      * Initialises client socket by {@code Socket} object.
-     *
-     * @see     java.net.Socket
      */
-    private void setSocket() {
+    private void initialSocket() {
         log.info("{} {}", host, port);
         try {
             socket = new Socket(host, port);
@@ -110,10 +98,8 @@ public class Client {
 
     /**
      * Initialises objectOutputStream by {@code ObjectOutputStream} object.
-     *
-     * @see     java.io.ObjectOutputStream
      */
-    private void setObjectOutputStream() {
+    public void initialObjectOutputStream() {
         try {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -124,10 +110,8 @@ public class Client {
 
     /**
      * Initialises objectInputStream by {@code ObjectInputStream} object.
-     *
-     * @see     java.io.ObjectInputStream
      */
-    private void setObjectInputStream() {
+    public void initialObjectInputStream() {
         try {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {

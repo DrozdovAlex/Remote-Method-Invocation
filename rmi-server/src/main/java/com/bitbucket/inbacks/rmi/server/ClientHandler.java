@@ -19,15 +19,13 @@ import java.util.concurrent.Executors;
  */
 @Log4j2
 class ClientHandler {
-    /** The objectOutputString is used to send
-     * response to the client */
+    /** Used to send response to the client */
     private ObjectOutputStream objectOutputStream;
 
-    /** The objectInputStream is used to obtain
-     * request from the client */
+    /** Used to obtain request from the client */
     private ObjectInputStream objectInputStream;
 
-    /** Pool is used to create pool for threads
+    /** Used to create pool for threads,
      * which creates threads when it is necessary */
     private ExecutorService pool = Executors.newCachedThreadPool();
 
@@ -38,7 +36,7 @@ class ClientHandler {
      * @param properties properties from property file
      */
     public void handle(Socket clientSocket, Properties properties) {
-        setStreams(clientSocket);
+        initialStreams(clientSocket);
 
         while (objectInputStream != null) {
             try {
@@ -69,24 +67,22 @@ class ClientHandler {
     }
 
     /**
-     * Causes {@link ClientHandler#setObjectOutputStream(Socket)}
-     * and {@link ClientHandler#setObjectInputStream(Socket)}.
+     * Causes {@link ClientHandler#initialObjectOutputStream(Socket)}
+     * and {@link ClientHandler#initialObjectInputStream(Socket)}.
      *
      * @param socket socket
      */
-    private void setStreams(Socket socket) {
-        setObjectOutputStream(socket);
-        setObjectInputStream(socket);
+    private void initialStreams(Socket socket) {
+        initialObjectOutputStream(socket);
+        initialObjectInputStream(socket);
     }
 
     /**
      * Initialises objectOutputStream by {@code ObjectOutputStream} object.
      *
      * @param clientSocket client socket
-     *
-     * @see     java.io.ObjectOutputStream
      */
-    private void setObjectOutputStream(Socket clientSocket) {
+    private void initialObjectOutputStream(Socket clientSocket) {
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
@@ -99,10 +95,8 @@ class ClientHandler {
      * Initialises objectInputStream by {@code ObjectInputStream} object.
      *
      * @param clientSocket client socket
-     *
-     * @see     java.io.ObjectInputStream
      */
-    private void setObjectInputStream(Socket clientSocket) {
+    private void initialObjectInputStream(Socket clientSocket) {
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
