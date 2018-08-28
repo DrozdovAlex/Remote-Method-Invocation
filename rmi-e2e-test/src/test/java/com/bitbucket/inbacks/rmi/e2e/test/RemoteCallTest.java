@@ -14,18 +14,18 @@ import static org.junit.Assert.assertEquals;
 public class RemoteCallTest {
     private static final int PORT = 4444;
     private static final String SERVICE_NAME = "Service";
-    private static final String WRONG_SERVICE_NAME = SERVICE_NAME.concat("Wrong");
+    private static final String WRONG_SERVICE_NAME = ("Wrong service");
     private static final String MAIL = "vip.alexd@gmail.com";
     private static final String GET_MAIL_METHOD = "getMail";
     private static final String MULTIPLICATION_METHOD = "multiplication";
-    private static final String WRONG_METHOD_NAME = GET_MAIL_METHOD.concat("Wrong");
+    private static final String WRONG_METHOD_NAME = ("Wrong method");
     private static final String ILLEGAL_SERVICE_NAME = "Illegal service name";
     private static final String ILLEGAL_METHOD_NAME = "Illegal method name";
     private static final String ILLEGAL_NUMBER_OF_PARAMETERS = "Illegal number of parameters";
     private static final String ILLEGAL_TYPE_OF_PARAMETERS = "Illegal type of parameters";
-    private static final Integer FIRST_MULTIPLIER = new Integer(10);
-    private static final Integer SECOND_MULTIPLIER = new Integer(5);
-    private static final Integer EXPECTED_RESULT = FIRST_MULTIPLIER * SECOND_MULTIPLIER;
+    private static final int FIRST_MULTIPLIER = 10;
+    private static final int SECOND_MULTIPLIER = 5;
+    private static final int EXPECTED_RESULT = FIRST_MULTIPLIER * SECOND_MULTIPLIER;
 
     private Server server;
     private Client client;
@@ -55,28 +55,28 @@ public class RemoteCallTest {
     }
 
     @Test
-    public void shouldThrowRemoteCallRuntimeExceptionWithIllegalServiceNameWhenInvokeWithWrongService() {
+    public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongService() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_SERVICE_NAME);
         client.remoteCall(WRONG_SERVICE_NAME, GET_MAIL_METHOD, new Object[]{});
     }
 
     @Test
-    public void shouldThrowRemoteCallRuntimeExceptionWithIllegalMethodNameWhenInvokeWithWrongMethod() {
+    public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongMethod() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_METHOD_NAME);
         client.remoteCall(SERVICE_NAME, WRONG_METHOD_NAME, new Object[]{});
     }
 
     @Test
-    public void shouldThrowRemoteCallRuntimeExceptionWithIllegalNumberOfParametersWhenInvokeWithWrongNumberOfParameters() {
+    public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongNumberOfParameters() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_NUMBER_OF_PARAMETERS);
         client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER});
     }
 
     @Test
-    public void shouldThrowRemoteCallRuntimeExceptionWithIllegalTypeOfParametersWhenInvokeWithWrongTypeOfParameters() {
+    public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongTypeOfParameters() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_TYPE_OF_PARAMETERS);
         client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER, MAIL});
