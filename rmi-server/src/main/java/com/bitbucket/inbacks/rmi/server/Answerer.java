@@ -57,11 +57,13 @@ public class Answerer {
      */
     public Object getAnswer() throws RemoteCallException {
         try {
-            if (getServiceMethod().getReturnType().getCanonicalName().equals("void")) {
-                getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
+            Method serviceMethod = getServiceMethod();
+            Class serviceClass = getServiceClass();
+            if (serviceMethod.getReturnType() == void.class) {
+                serviceMethod.invoke(serviceClass.newInstance(), parameters);
                 return new String("Return type of this method is void");
             }
-            return getServiceMethod().invoke(getServiceClass().newInstance(), parameters);
+            return serviceMethod.invoke(serviceClass.newInstance(), parameters);
         } catch(InstantiationException e) {
             throw new RemoteCallException(ErrorCode.SERVICE_ACCESS_IS_DENIED);
         } catch (IllegalAccessException e) {
