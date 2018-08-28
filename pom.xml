@@ -7,7 +7,7 @@
     <groupId>com.bitbucket.inbacks.rmi</groupId>
     <artifactId>rmi</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,28 +46,28 @@
             <dependency>
                 <groupId>com.bitbucket.inbacks.rmi</groupId>
                 <artifactId>rmi-protocol</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.bitbucket.inbacks.rmi</groupId>
                 <artifactId>rmi-server</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
                 <groupId>com.bitbucket.inbacks.rmi</groupId>
                 <artifactId>rmi-client</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.bitbucket.inbacks.rmi</groupId>
                 <artifactId>rmi-e2e-test</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.bitbucket.inbacks.rmi</groupId>
                 <artifactId>rmi-service</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
