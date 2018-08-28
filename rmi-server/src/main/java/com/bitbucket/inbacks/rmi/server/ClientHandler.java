@@ -71,6 +71,7 @@ class ClientHandler {
      */
     private void completeHandle(Socket socket) {
         try {
+            pool.shutdown();
             socket.close();
             Thread.interrupted();
         } catch (IOException e) {
