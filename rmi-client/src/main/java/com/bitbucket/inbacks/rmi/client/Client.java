@@ -41,7 +41,7 @@ public class Client {
     private ObjectOutputStream objectOutputStream;
 
     /** The responses is used to cache responses from server */
-    private Map<Long,CompletableFuture<Object>> responses;
+    private Map<Long, CompletableFuture<Object>> responses;
 
     /** The counter provides unique id
      * for every request inside session*/
@@ -98,11 +98,11 @@ public class Client {
      * @see     java.net.Socket
      */
     private void setSocket() {
-        log.info(host + " " + port);
+        log.info("{} {}", host, port);
         try {
             socket = new Socket(host, port);
         } catch(IOException e) {
-            log.error("Problem while opening client socket");
+            log.error("Problem while opening client socket", e);
         }
     }
 
