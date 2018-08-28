@@ -8,18 +8,16 @@ import java.io.Serializable;
  * This {@code Response} class represents a special message,
  * which is sent from the {@code Server} to the {@code Client}.
  */
-@RequiredArgsConstructor
+@Data
+@Getter
 public class Response implements Serializable {
     /** Client id field */
-    @Getter
     private final Long id;
 
     /** Answer field */
-    @Getter
     private final Object answer;
 
     /** Error flag field */
-    @Getter
     private final boolean error;
 
     /**
