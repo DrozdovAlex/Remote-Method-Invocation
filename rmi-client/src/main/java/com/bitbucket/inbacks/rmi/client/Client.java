@@ -195,6 +195,7 @@ public class Client {
     public void disconnect() {
         try {
             if (!socket.isClosed()) {
+                responses.clear();
                 socket.close();
             }
         } catch (IOException e) {
