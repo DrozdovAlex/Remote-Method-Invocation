@@ -83,9 +83,11 @@ public class Client {
                     responses.get(response.getId()).complete(response);
                 } catch (SocketException e) {
                     log.warn("Socket is already closed");
+                    stopFutures();
                     break;
                 } catch (IOException | ClassNotFoundException e) {
                     log.error("Problem while reading object from input stream");
+                    stopFutures();
                     break;
                 }
             }
@@ -111,7 +113,7 @@ public class Client {
      *
      * @see     java.io.ObjectOutputStream
      */
-    public void setObjectOutputStream() {
+    private void setObjectOutputStream() {
         try {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -125,13 +127,18 @@ public class Client {
      *
      * @see     java.io.ObjectInputStream
      */
-    public void setObjectInputStream() {
+    private void setObjectInputStream() {
         try {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             log.warn("Problem with opening of input stream", e);
             disconnect();
         }
+    }
+
+    private void stopFutures() {
+        responses.values().stream().forEach(e -> e.cancel(true));
+        responses.clear();
     }
 
     /**
@@ -172,7 +179,7 @@ public class Client {
             Object answer = response.getAnswer();
 
             if (response.isError()) {
-                throw new RemoteCallRuntimeException(answer.toString());
+                throw new RemoteCallRuntimeException((String)answer);
             }
 
             return answer;
@@ -195,7 +202,7 @@ public class Client {
     public void disconnect() {
         try {
             if (!socket.isClosed()) {
-                responses.clear();
+                stopFutures();
                 socket.close();
             }
         } catch (IOException e) {
