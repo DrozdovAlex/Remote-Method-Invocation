@@ -20,6 +20,14 @@ public class Response implements Serializable {
     /** Error flag field */
     private final boolean error;
 
+    public static Response ok(Long requestId, Object answer) {
+        return new Response(requestId, answer, false);
+    }
+
+    public static Response withError(Long requestId, String errorCode) {
+        return new Response(requestId, errorCode, true);
+    }
+
     /**
      * Returns {@code String} object with {@code id} and
      * {@code answer} of the response.
