@@ -13,24 +13,8 @@ import java.io.IOException;
  * <li>{@code parameters} field has illegal length</li>
  * <li>{@code parameters} field has illegal type</li>
  * </ul>
- *
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#getAnswer
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#getServiceMethod
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#checkMethodWithParameters
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#getMethodsWithEqualName
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#getMethods
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#getServiceClass
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#checkMethodName
- * @see     com.bitbucket.inbacks.rmi.server.Answerer#checkParameters
  */
 public class RemoteCallException extends IOException {
-    /**
-     * Constructs a {@code RemoteCallException} with no detail message.
-     */
-    public RemoteCallException() {
-        super();
-    }
-
     /**
      * Constructs a {@code RemoteCallException} corresponds
      * to the special error code from {@code ErrorCode}
