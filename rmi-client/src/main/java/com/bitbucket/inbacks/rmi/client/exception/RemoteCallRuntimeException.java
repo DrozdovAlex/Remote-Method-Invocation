@@ -12,18 +12,8 @@ package com.bitbucket.inbacks.rmi.client.exception;
  * <li>Types of {@code params} are illegal</li>
  * <li>Access to {@code method} is denied</li>
  * </ul>
- *
- * @see     com.bitbucket.inbacks.rmi.client.Client#remoteCall
  */
 public class RemoteCallRuntimeException extends RuntimeException {
-    /**
-     * Constructs a {@code RemoteCallRuntimeException} with
-     * no detail message.
-     */
-    public RemoteCallRuntimeException() {
-        super();
-    }
-
     /**
      * Constructs a {@code RemoteCallRuntimeException} with the
      * specified detail message.
