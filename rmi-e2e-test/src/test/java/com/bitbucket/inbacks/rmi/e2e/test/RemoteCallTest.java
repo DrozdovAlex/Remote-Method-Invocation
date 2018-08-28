@@ -44,42 +44,46 @@ public class RemoteCallTest {
     @Test
     public void shouldReturnMailWhenInvokeGetMailMethod() {
         assertEquals(MAIL,
-                (client.remoteCall(SERVICE_NAME, GET_MAIL_METHOD, new Object[]{})));
+                (call(SERVICE_NAME, GET_MAIL_METHOD)));
     }
 
     @Test
     public void shouldReturnCompositionWhenInvokeMultiplicationMethod() {
         assertEquals(EXPECTED_RESULT,
-                (client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD,
-                        new Object[]{FIRST_MULTIPLIER,SECOND_MULTIPLIER})));
+                (call(SERVICE_NAME, MULTIPLICATION_METHOD,
+                        FIRST_MULTIPLIER,SECOND_MULTIPLIER)));
     }
 
     @Test
     public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongService() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_SERVICE_NAME);
-        client.remoteCall(WRONG_SERVICE_NAME, GET_MAIL_METHOD, new Object[]{});
+        call(WRONG_SERVICE_NAME, GET_MAIL_METHOD);
     }
 
     @Test
     public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongMethod() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_METHOD_NAME);
-        client.remoteCall(SERVICE_NAME, WRONG_METHOD_NAME, new Object[]{});
+        call(SERVICE_NAME, WRONG_METHOD_NAME);
     }
 
     @Test
     public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongNumberOfParameters() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_NUMBER_OF_PARAMETERS);
-        client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER});
+        call(SERVICE_NAME, MULTIPLICATION_METHOD, FIRST_MULTIPLIER);
     }
 
     @Test
     public void shouldThrowRemoteCallRuntimeExceptionWhenInvokeWithWrongTypeOfParameters() {
         thrown.expect(RemoteCallRuntimeException.class);
         thrown.expectMessage(ILLEGAL_TYPE_OF_PARAMETERS);
-        client.remoteCall(SERVICE_NAME, MULTIPLICATION_METHOD, new Object[]{FIRST_MULTIPLIER, MAIL});
+        call(SERVICE_NAME, MULTIPLICATION_METHOD, FIRST_MULTIPLIER, MAIL);
+    }
+
+    private Object call(String service, String method, Object ...a){
+        return client.remoteCall(service, method, a);
     }
 
     @After
