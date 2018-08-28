@@ -45,37 +45,26 @@ class ClientHandler {
                 Request request = readRequest();
 
                 pool.execute(() -> {
+                    Response response;
                     try {
-                        writeResponse(clientSocket, new Response(request.getId(),
-                                new Answerer(properties.getProperty(request.getService()),
-                                        request.getMethod(),
-                                        request.getParameters())
-                                        .getAnswer(), false));
+                        String fullServiceName = getFullServiceName(properties, request.getService());
+                        Object answer = new Answerer(fullServiceName,
+                                request.getMethod(),
+                                request.getParameters())
+                                .getAnswer();
+
+                        response = Response.ok(request.getId(), answer);
                     } catch (RemoteCallException e) {
-                        writeResponse(clientSocket, new Response(request.getId(), e.getMessage(),
-                                true));
+                        response = Response.withError(request.getId(), e.getMessage());
                     }
+
+                    writeResponse(clientSocket, response);
                 });
             } catch (IOException | ClassNotFoundException e) {
                 log.warn("Problem while reading object from input stream");
                 completeHandle(clientSocket);
                 break;
             }
-        }
-    }
-
-    /**
-     * Closes {@code Socket} connection, interrupts {@code Thread}.
-     *
-     * @param socket socket
-     */
-    private void completeHandle(Socket socket) {
-        try {
-            pool.shutdown();
-            socket.close();
-            Thread.interrupted();
-        } catch (IOException e) {
-            log.error("Completing work with client failed", e);
         }
     }
 
@@ -137,6 +126,10 @@ class ClientHandler {
         return request;
     }
 
+    private String getFullServiceName(Properties properties, String serviceName) {
+        return properties.getProperty(serviceName);
+    }
+
     /**
      * Sends a response from {@code Server} to the {@code Client}.
      *
@@ -152,6 +145,21 @@ class ClientHandler {
         } catch (IOException e) {
             log.error("Problem while write response to the output stream", e);
             completeHandle(socket);
+        }
+    }
+
+    /**
+     * Closes {@code Socket} connection, interrupts {@code Thread}.
+     *
+     * @param socket socket
+     */
+    private void completeHandle(Socket socket) {
+        try {
+            pool.shutdown();
+            socket.close();
+            Thread.interrupted();
+        } catch (IOException e) {
+            log.error("Completing work with client failed", e);
         }
     }
 }
