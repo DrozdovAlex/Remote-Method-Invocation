@@ -61,7 +61,7 @@ public class Answerer {
             Class serviceClass = getServiceClass();
             if (serviceMethod.getReturnType() == void.class) {
                 serviceMethod.invoke(serviceClass.newInstance(), parameters);
-                return new String("Return type of this method is void");
+                return "Return type of this method is void";
             }
             return serviceMethod.invoke(serviceClass.newInstance(), parameters);
         } catch(InstantiationException e) {
