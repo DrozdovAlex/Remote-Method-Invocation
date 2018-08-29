@@ -41,15 +41,4 @@ public class Response implements Serializable {
     public static Response withError(Long requestId, String errorCode) {
         return new Response(requestId, errorCode, true);
     }
-
-    /**
-     * Returns {@code String} object with {@code id} and
-     * {@code answer} of the response.
-     *
-     * @return {@code String} representation of {@code Response}
-     */
-    @Override
-    public String toString() {
-        return id + " " + answer;
-    }
 }
