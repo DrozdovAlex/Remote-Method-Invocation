@@ -14,12 +14,24 @@ public enum ErrorCode {
     METHOD_ACCESS_IS_DENIED("Method access is denied"),
     INVOCATION_FAILED("Error while method is working");
 
+    /** Error message field */
     private String errorMessage;
 
+    /**
+     * Initializes a newly created {@code ErrorCode} object
+     * with specified error message.
+     *
+     * @param errorMessage current error
+     */
     ErrorCode(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
+    /**
+     * Returns message with error
+     *
+     * @return error message
+     */
     public String get() {
         return errorMessage;
     }

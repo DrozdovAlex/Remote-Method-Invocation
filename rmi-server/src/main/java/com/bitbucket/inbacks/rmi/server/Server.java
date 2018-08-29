@@ -25,13 +25,13 @@ public class Server {
     /**
      * Initializes a newly created {@code Server} object
      * with specified port and causes methods {@link Server#loadProperties()}
-     * and {@link Server#setServerSocket(int)}.
+     * and {@link Server#initServerSocket(int)}.
      *
      * @param PORT value of the port
      */
     public Server(int PORT) {
         loadProperties();
-        setServerSocket(PORT);
+        initServerSocket(PORT);
     }
 
     /**
@@ -52,7 +52,7 @@ public class Server {
      *
      * @param PORT value of the port
      */
-    private void setServerSocket(int PORT) {
+    private void initServerSocket(int PORT) {
         try {
             serverSocket = new ServerSocket(PORT);
         } catch (IOException e) {
