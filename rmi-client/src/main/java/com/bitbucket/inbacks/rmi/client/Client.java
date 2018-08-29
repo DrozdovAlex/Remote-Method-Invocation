@@ -77,11 +77,11 @@ public class Client {
                     responses.get(response.getId()).complete(response);
                 } catch (SocketException e) {
                     log.warn("Socket is already closed");
-                    stopFutures();
+                    interruptFutures();
                     break;
                 } catch (IOException | ClassNotFoundException e) {
                     log.error("Problem while reading object from input stream");
-                    stopFutures();
+                    interruptFutures();
                     break;
                 }
             }
@@ -124,7 +124,8 @@ public class Client {
         }
     }
 
-    private void stopFutures() {
+    /** Interrupts futures and clear map */
+    private void interruptFutures() {
         responses.values().stream().forEach(e -> e.cancel(true));
         responses.clear();
     }
@@ -159,10 +160,18 @@ public class Client {
 
             responses.put(id, new CompletableFuture<>());
 
+
             locker.lock();
-            objectOutputStream.writeObject(request);
-            objectOutputStream.flush();
-            locker.unlock();
+            try {
+                objectOutputStream.writeObject(request);
+                objectOutputStream.flush();
+            } catch (IOException e) {
+                log.warn("Problem while writing object to output stream" , e);
+                disconnect();
+                throw new FailedConnectionRuntimeException("Problem with connection", e);
+            } finally {
+                locker.unlock();
+            }
 
             Response response = (Response) responses.get(id).get();
             Object answer = response.getAnswer();
@@ -172,10 +181,6 @@ public class Client {
             }
 
             return answer;
-        } catch (IOException e) {
-            log.warn("Problem while writing object to output stream" , e);
-            disconnect();
-            throw new FailedConnectionRuntimeException("Problem with connection", e);
         } catch (InterruptedException | ExecutionException e) {
             log.warn("Problem with extracting response from the map" , e);
             disconnect();
@@ -191,7 +196,7 @@ public class Client {
     public void disconnect() {
         try {
             if (!socket.isClosed()) {
-                stopFutures();
+                interruptFutures();
                 socket.close();
             }
         } catch (IOException e) {
