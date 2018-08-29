@@ -2,9 +2,9 @@ package com.bitbucket.inbacks.rmi.server;
 
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
-
-import lombok.extern.log4j.Log4j2;
 import com.bitbucket.inbacks.rmi.server.exception.RemoteCallException;
+import lombok.extern.log4j.Log4j2;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The {@code ClientHandler} class represents
@@ -28,6 +29,9 @@ class ClientHandler {
     /** Used to create pool for threads,
      * which creates threads when it is necessary */
     private ExecutorService pool = Executors.newCachedThreadPool();
+
+    /** Used to create blocking in {@link ClientHandler#writeResponse(Socket, Response)}. */
+    private ReentrantLock locker = new ReentrantLock();
 
     /**
      * Creates a thread pool for processing requests from the {@code Client}.
@@ -132,10 +136,10 @@ class ClientHandler {
      */
     private void writeResponse(Socket socket, Response response) {
         try {
-            synchronized (objectInputStream) {
-                objectOutputStream.writeObject(response);
-                objectOutputStream.flush();
-            }
+            locker.lock();
+            objectOutputStream.writeObject(response);
+            objectOutputStream.flush();
+            locker.unlock();
         } catch (IOException e) {
             log.error("Problem while write response to the output stream", e);
             completeHandle(socket);

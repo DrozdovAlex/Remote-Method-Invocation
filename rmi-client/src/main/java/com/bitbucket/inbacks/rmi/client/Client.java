@@ -1,7 +1,7 @@
 package com.bitbucket.inbacks.rmi.client;
 
-import com.bitbucket.inbacks.rmi.client.exception.RemoteCallRuntimeException;
 import com.bitbucket.inbacks.rmi.client.exception.FailedConnectionRuntimeException;
+import com.bitbucket.inbacks.rmi.client.exception.RemoteCallRuntimeException;
 import com.bitbucket.inbacks.rmi.protocol.Request;
 import com.bitbucket.inbacks.rmi.protocol.Response;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The {@code Client} class represents implementation of
@@ -43,6 +44,9 @@ public class Client {
 
     /** Provides unique id */
     private AtomicLong counter = new AtomicLong(0L);
+
+    /** Used to create blocking in {@link Client#remoteCall(String, String, Object[])}. */
+    private ReentrantLock locker = new ReentrantLock();
 
     /**
      * Initializes the client. No connection established.
@@ -154,10 +158,11 @@ public class Client {
             log.info("Your request : {}", request);
 
             responses.put(id, new CompletableFuture<>());
-            synchronized (objectOutputStream) {
-                objectOutputStream.writeObject(request);
-                objectOutputStream.flush();
-            }
+
+            locker.lock();
+            objectOutputStream.writeObject(request);
+            objectOutputStream.flush();
+            locker.unlock();
 
             Response response = (Response) responses.get(id).get();
             Object answer = response.getAnswer();
