@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
  * and also parameters ({@code parameters}).
  */
 public class Answerer {
-    /** Cache service name */
-    private String service;
+    /** Service name field. */
+    private final String service;
 
-    /** Cache method name */
-    private String method;
+    /** Method name field. */
+    private final String method;
 
-    /** Cache parameters of the method */
-    private Object[] parameters;
+    /** Parameters field. */
+    private final Object[] parameters;
 
     /**
      * Initializes a newly created {@code Answerer} object
@@ -58,7 +58,7 @@ public class Answerer {
             Method serviceMethod = getServiceMethod();
             Class serviceClass = getServiceClass();
             return serviceMethod.invoke(serviceClass.newInstance(), parameters);
-        } catch(InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new RemoteCallException(ErrorCode.SERVICE_ACCESS_IS_DENIED);
         } catch (IllegalAccessException e) {
             throw new RemoteCallException(ErrorCode.METHOD_ACCESS_IS_DENIED);
@@ -194,7 +194,7 @@ public class Answerer {
 
     /**
      * Returns list of {@code Method} with the name {@code method}
-     * and number of parameters is equal to the length of {@code parameters}
+     * and number of parameters is equal to the length of {@code parameters}.
      *
      * @param methods list of {@code Method} with the name {@code method}
      * @return list of {@code Method} that contains methods with

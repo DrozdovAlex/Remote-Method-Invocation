@@ -32,6 +32,7 @@ public class Request implements Serializable {
      */
     @Override
     public String toString() {
-        return id + " " + service +" "+ method + " " + Arrays.toString(parameters);
+        return id + " " + service + " " + method +
+                " " + Arrays.toString(parameters);
     }
 }
