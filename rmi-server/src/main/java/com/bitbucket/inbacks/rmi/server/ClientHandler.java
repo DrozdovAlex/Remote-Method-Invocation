@@ -40,7 +40,7 @@ class ClientHandler {
      * @param properties properties from property file
      */
     public void handle(Socket clientSocket, Properties properties) {
-        initialStreams(clientSocket);
+        initStreams(clientSocket);
 
         while (objectInputStream != null) {
             try {
@@ -71,14 +71,14 @@ class ClientHandler {
     }
 
     /**
-     * Causes {@link ClientHandler#initialObjectOutputStream(Socket)}
-     * and {@link ClientHandler#initialObjectInputStream(Socket)}.
+     * Cause {@link ClientHandler#initObjectOutputStream(Socket)}
+     * and {@link ClientHandler#initObjectInputStream(Socket)}.
      *
      * @param socket socket
      */
-    private void initialStreams(Socket socket) {
-        initialObjectOutputStream(socket);
-        initialObjectInputStream(socket);
+    private void initStreams(Socket socket) {
+        initObjectOutputStream(socket);
+        initObjectInputStream(socket);
     }
 
     /**
@@ -86,7 +86,7 @@ class ClientHandler {
      *
      * @param clientSocket client socket
      */
-    private void initialObjectOutputStream(Socket clientSocket) {
+    private void initObjectOutputStream(Socket clientSocket) {
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
@@ -100,7 +100,7 @@ class ClientHandler {
      *
      * @param clientSocket client socket
      */
-    private void initialObjectInputStream(Socket clientSocket) {
+    private void initObjectInputStream(Socket clientSocket) {
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
@@ -128,7 +128,7 @@ class ClientHandler {
      * Returns service name with packages
      *
      * @param properties property file
-     * @param serviceName nae of the service
+     * @param serviceName name of the service
      * @return full service name
      */
     private String getFullServiceName(Properties properties, String serviceName) {

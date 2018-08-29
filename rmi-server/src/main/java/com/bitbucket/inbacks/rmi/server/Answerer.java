@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
  * and also parameters ({@code parameters}).
  */
 public class Answerer {
-    /** Cache service name */
+    /** Service name field */
     private String service;
 
-    /** Cache method name */
+    /** Method name field */
     private String method;
 
-    /** Cache parameters of the method */
+    /** Parameters field */
     private Object[] parameters;
 
     /**

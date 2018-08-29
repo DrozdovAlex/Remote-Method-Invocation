@@ -8,6 +8,7 @@ import java.util.Date;
 public class Service {
     /**
      * Sends a thread to sleep for a certain time
+     *
      * @param millis - sleeping time
      * @throws InterruptedException if you catch this exception,
      *         it means that the thread has been interrupted
@@ -18,6 +19,7 @@ public class Service {
 
     /**
      * Returns the current date
+     *
      * @return a current date
      */
     public Date getCurrentDate() {
@@ -26,6 +28,7 @@ public class Service {
 
     /**
      * Returns the mail
+     *
      * @return mail
      */
     public static String getMail() {
@@ -34,6 +37,7 @@ public class Service {
 
     /**
      * Returns the multiplication of numbers
+     *
      * @param number1 a first multiplier
      * @param number2 a second multiplier
      * @return multiplication of numbers

@@ -5,8 +5,6 @@ package com.bitbucket.inbacks.rmi.client.exception;
  * between client and server by using {@code remoteCall} method
  * in class {@code Client} but it fails because of problems
  * with input and output streams.
- *
- * @see     com.bitbucket.inbacks.rmi.client.Client#remoteCall
  */
 public class FailedConnectionRuntimeException extends RuntimeException {
     /**
