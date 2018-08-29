@@ -24,4 +24,16 @@ public class RemoteCallException extends IOException {
     public RemoteCallException(ErrorCode code) {
         super(code.get());
     }
+
+    /**
+     * Constructs a {@code RemoteCallException} corresponds
+     * to the special error code from {@code ErrorCode} and
+     * specified error message from method
+     *
+     * @param code code of error from {@code ErrorCode}
+     * @param extraMessage error message from method
+     */
+    public RemoteCallException(ErrorCode code, String extraMessage) {
+        super(code.get() + ". " + extraMessage);
+    }
 }

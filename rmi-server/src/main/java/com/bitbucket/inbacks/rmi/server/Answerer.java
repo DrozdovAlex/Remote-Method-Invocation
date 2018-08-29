@@ -63,7 +63,7 @@ public class Answerer {
         } catch (IllegalAccessException e) {
             throw new RemoteCallException(ErrorCode.METHOD_ACCESS_IS_DENIED);
         } catch (InvocationTargetException e) {
-            throw new RemoteCallException(ErrorCode.INVOCATION_FAILED);
+            throw new RemoteCallException(ErrorCode.INVOCATION_FAILED, e.getCause().getMessage());
         }
     }
 

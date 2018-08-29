@@ -12,7 +12,7 @@ public enum ErrorCode {
     ILLEGAL_TYPE_OF_PARAMETERS("Illegal type of parameters"),
     SERVICE_ACCESS_IS_DENIED("Service access is denied"),
     METHOD_ACCESS_IS_DENIED("Method access is denied"),
-    INVOCATION_FAILED("Failed when starting");
+    INVOCATION_FAILED("Error while method is working");
 
     private String errorMessage;
 

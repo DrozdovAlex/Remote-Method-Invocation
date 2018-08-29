@@ -25,11 +25,13 @@ public class MainDemo {
 
         public void run() {
             while(true) {
-                c.remoteCall("Service", "sleep", new Object[] {new Long(1000)});
-                log.info("Current Date is: " + c.remoteCall( "Service",
-                        "getCurrentDate", new Object[]{}));
-                log.info("Mail is: " + c.remoteCall( "Service",
-                        "getMail", new Object[]{}));
+//                c.remoteCall("Service", "sleep", new Object[] {new Long(1000)});
+//                log.info("Current Date is: " + c.remoteCall( "Service",
+//                        "getCurrentDate", new Object[]{}));
+//                log.info("Mail is: " + c.remoteCall( "Service",
+//                        "getMail", new Object[]{}));
+                log.info("sqrt is equal to  " + c.remoteCall( "Service",
+                        "sqrt", new Object[]{new Double(-1)}));
             }
         }
     }
