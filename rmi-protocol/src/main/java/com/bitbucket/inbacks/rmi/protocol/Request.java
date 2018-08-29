@@ -24,8 +24,14 @@ public class Request implements Serializable {
     /** Parameters field */
     private final Object[] parameters;
 
+    /**
+     * Returns {@code String} object with {@code id}, {@code service} name,
+     * {@code method} name and {@code parameters} of the request.
+     *
+     * @return {@code String} representation of {@code Request}
+     */
     @Override
     public String toString() {
-        return id + " " + service+" "+ method + " " + Arrays.toString(parameters);
+        return id + " " + service +" "+ method + " " + Arrays.toString(parameters);
     }
 }

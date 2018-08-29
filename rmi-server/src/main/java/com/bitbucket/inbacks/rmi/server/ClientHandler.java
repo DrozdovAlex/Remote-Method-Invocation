@@ -124,6 +124,13 @@ class ClientHandler {
         return request;
     }
 
+    /**
+     * Returns service name with packages
+     *
+     * @param properties property file
+     * @param serviceName nae of the service
+     * @return full service name
+     */
     private String getFullServiceName(Properties properties, String serviceName) {
         return properties.getProperty(serviceName);
     }
@@ -139,10 +146,11 @@ class ClientHandler {
             locker.lock();
             objectOutputStream.writeObject(response);
             objectOutputStream.flush();
-            locker.unlock();
         } catch (IOException e) {
             log.error("Problem while write response to the output stream", e);
             completeHandle(socket);
+        } finally {
+            locker.unlock();
         }
     }
 

@@ -20,10 +20,24 @@ public class Response implements Serializable {
     /** Error flag field */
     private final boolean error;
 
+    /**
+     * Returns a response without the error flag enabled.
+     *
+     * @param requestId request id from the client
+     * @param answer error flag
+     * @return response
+     */
     public static Response ok(Long requestId, Object answer) {
         return new Response(requestId, answer, false);
     }
 
+    /**
+     * Returns a response with the error flag enabled.
+     *
+     * @param requestId request id from the client
+     * @param errorCode error flag
+     * @return response
+     */
     public static Response withError(Long requestId, String errorCode) {
         return new Response(requestId, errorCode, true);
     }
