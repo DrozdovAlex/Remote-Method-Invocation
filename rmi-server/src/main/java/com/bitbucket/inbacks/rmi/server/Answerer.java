@@ -153,7 +153,7 @@ public class Answerer {
      *         with such name {@code method}
      */
     private void checkMethodName(List<Method> methods) throws RemoteCallException {
-        if (methods.size() == 0) {
+        if (methods.isEmpty()) {
             throw new RemoteCallException(ErrorCode.METHOD_NOT_FOUND);
         }
     }
@@ -170,7 +170,7 @@ public class Answerer {
     private void checkParameters(List<Method> methods) throws RemoteCallException {
         List<Method> equalParametersNumberMethods = getEqualParameterNumberMethods(methods);
 
-        if (equalParametersNumberMethods.size() == 0) {
+        if (equalParametersNumberMethods.isEmpty()) {
             throw new RemoteCallException(ErrorCode.ILLEGAL_NUMBER_OF_PARAMETERS);
         }
     }

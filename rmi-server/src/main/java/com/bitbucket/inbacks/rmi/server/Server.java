@@ -14,7 +14,7 @@ import java.util.Properties;
 @Log4j2
 public class Server {
     /** Property file name */
-    private final String PROPERTY_FILE_NAME = "/server.properties";
+    private final static String PROPERTY_FILE_NAME = "/server.properties";
 
     /** ServerSocket field */
     private ServerSocket serverSocket;
@@ -86,9 +86,9 @@ public class Server {
      * @param socket client socket
      */
     private void startClientHandler(Socket socket) {
-        new Thread(() -> {
-            new ClientHandler().handle(socket, properties);
-        }).start();
+        new Thread(() ->
+            new ClientHandler().handle(socket, properties)
+        ).start();
     }
 
     /**
