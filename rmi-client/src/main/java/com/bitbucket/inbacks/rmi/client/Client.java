@@ -160,18 +160,7 @@ public class Client {
 
             responses.put(id, new CompletableFuture<>());
 
-
-            locker.lock();
-            try {
-                objectOutputStream.writeObject(request);
-                objectOutputStream.flush();
-            } catch (IOException e) {
-                log.warn("Problem while writing object to output stream" , e);
-                disconnect();
-                throw new FailedConnectionRuntimeException("Problem with connection", e);
-            } finally {
-                locker.unlock();
-            }
+            writeRequest(request);
 
             Response response = (Response) responses.get(id).get();
             Object answer = response.getAnswer();
@@ -187,6 +176,26 @@ public class Client {
             throw new FailedConnectionRuntimeException("Problem with connection", e);
         } finally {
             responses.remove(id);
+        }
+    }
+
+    /**
+     * Sends request to {@code Server}.
+     * }
+     * @param request request from client
+     * @throws IOException thrown when there has been an Input/Output error
+     */
+    private void writeRequest(Request request) {
+        locker.lock();
+        try {
+            objectOutputStream.writeObject(request);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            log.warn("Problem while writing object to output stream" , e);
+            disconnect();
+            throw new FailedConnectionRuntimeException("Problem with connection", e);
+        } finally {
+            locker.unlock();
         }
     }
 
