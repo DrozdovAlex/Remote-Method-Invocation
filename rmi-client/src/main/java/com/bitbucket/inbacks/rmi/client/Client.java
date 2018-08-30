@@ -24,25 +24,25 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Log4j2
 public class Client {
-    /** Server host name */
+    /** Server host name. */
     private final String host;
 
-    /** Server port number */
+    /** Server port number. */
     private final int port;
 
-    /** Socket field */
+    /** Socket field. */
     private Socket socket;
 
-    /** Used to obtain response from the server */
+    /** Used to obtain response from the server. */
     private ObjectInputStream objectInputStream;
 
-    /** Used to send request to the server */
+    /** Used to send request to the server. */
     private ObjectOutputStream objectOutputStream;
 
-    /** Used to cache responses from server */
+    /** Used to cache responses from server. */
     private Map<Long, CompletableFuture<Object>> responses;
 
-    /** Provides unique id */
+    /** Provides unique id. */
     private AtomicLong counter = new AtomicLong(0L);
 
     /** Used to create blocking in {@link Client#remoteCall(String, String, Object[])}. */
@@ -124,7 +124,7 @@ public class Client {
         }
     }
 
-    /** Interrupts futures and clear map */
+    /** Interrupts futures and clear map. */
     private void interruptFutures() {
         responses.values().stream().forEach(e -> e.cancel(true));
         responses.clear();
@@ -166,12 +166,12 @@ public class Client {
             Object answer = response.getAnswer();
 
             if (response.isError()) {
-                throw new RemoteCallRuntimeException((String)answer);
+                throw new RemoteCallRuntimeException((String) answer);
             }
 
             return answer;
         } catch (InterruptedException | ExecutionException e) {
-            log.warn("Problem with extracting response from the map" , e);
+            log.warn("Problem with extracting response from the map", e);
             disconnect();
             throw new FailedConnectionRuntimeException("Problem with connection", e);
         } finally {
@@ -191,7 +191,7 @@ public class Client {
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
         } catch (IOException e) {
-            log.warn("Problem while writing object to output stream" , e);
+            log.warn("Problem while writing object to output stream", e);
             disconnect();
             throw new FailedConnectionRuntimeException("Problem with connection", e);
         } finally {
@@ -200,7 +200,7 @@ public class Client {
     }
 
     /**
-     * Disconnects client by closing it's {@code socket}
+     * Disconnects client by closing it's {@code socket}.
      */
     public void disconnect() {
         try {
