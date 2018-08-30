@@ -11,13 +11,13 @@ import java.io.IOException;
  * <li>{@code service} field has illegal name</li>
  * <li>{@code method} field in {@code Answerer} has illegal name</li>
  * <li>{@code parameters} field has illegal length</li>
- * <li>{@code parameters} field has illegal type</li>
+ * <li>{@code parameters} field has illegal type.</li>
  * </ul>
  */
 public class RemoteCallException extends IOException {
     /**
      * Constructs a {@code RemoteCallException} corresponds
-     * to the special error code from {@code ErrorCode}
+     * to the special error code from {@code ErrorCode}.
      *
      * @param code code of error from {@code ErrorCode}
      */
@@ -28,7 +28,7 @@ public class RemoteCallException extends IOException {
     /**
      * Constructs a {@code RemoteCallException} corresponds
      * to the special error code from {@code ErrorCode} and
-     * specified error message from method
+     * specified error message from method.
      *
      * @param code code of error from {@code ErrorCode}
      * @param extraMessage error message from method

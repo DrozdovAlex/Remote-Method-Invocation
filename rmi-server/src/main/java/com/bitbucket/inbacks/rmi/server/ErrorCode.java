@@ -2,7 +2,7 @@ package com.bitbucket.inbacks.rmi.server;
 
 /**
  * Enumeration of all possible error codes which
- * correspond to specified errors
+ * correspond to specified errors.
  */
 public enum ErrorCode {
 
@@ -14,7 +14,7 @@ public enum ErrorCode {
     METHOD_ACCESS_IS_DENIED("Method access is denied"),
     INVOCATION_FAILED("Error while method is working");
 
-    /** Error message field */
+    /** Error message field. */
     private String errorMessage;
 
     /**
@@ -28,7 +28,7 @@ public enum ErrorCode {
     }
 
     /**
-     * Returns message with error
+     * Returns message with error.
      *
      * @return error message
      */

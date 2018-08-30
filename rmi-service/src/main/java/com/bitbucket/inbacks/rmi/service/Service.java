@@ -3,11 +3,11 @@ package com.bitbucket.inbacks.rmi.service;
 import java.util.Date;
 
 /**
- * This {@code Service} class represents a set of specific methods
+ * This {@code Service} class represents a set of specific methods.
  */
 public class Service {
     /**
-     * Sends a thread to sleep for a certain time
+     * Sends a thread to sleep for a certain time.
      *
      * @param millis - sleeping time
      * @throws InterruptedException if you catch this exception,
@@ -18,7 +18,7 @@ public class Service {
     }
 
     /**
-     * Returns the current date
+     * Returns the current date.
      *
      * @return a current date
      */
@@ -27,7 +27,7 @@ public class Service {
     }
 
     /**
-     * Returns the mail
+     * Returns the mail.
      *
      * @return mail
      */
@@ -36,7 +36,7 @@ public class Service {
     }
 
     /**
-     * Returns the multiplication of numbers
+     * Returns the multiplication of numbers.
      *
      * @param number1 a first multiplier
      * @param number2 a second multiplier
@@ -47,7 +47,7 @@ public class Service {
     }
 
     /**
-     * Returns square root of signified parameter
+     * Returns square root of signified parameter.
      *
      * @param value a value
      * @return square root of {@code value}

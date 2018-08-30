@@ -20,14 +20,14 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Log4j2
 class ClientHandler {
-    /** Used to send response to the client */
+    /** Used to send response to the client. */
     private ObjectOutputStream objectOutputStream;
 
-    /** Used to obtain request from the client */
+    /** Used to obtain request from the client. */
     private ObjectInputStream objectInputStream;
 
     /** Used to create pool for threads,
-     * which creates threads when it is necessary */
+     * which creates threads when it is necessary. */
     private ExecutorService pool = Executors.newCachedThreadPool();
 
     /** Used to create blocking in {@link ClientHandler#writeResponse(Socket, Response)}. */
